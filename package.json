@@ -1,0 +1,20 @@
+{
+  "name": "mobx-decorators",
+  "version": "0.0.1",
+  "description": "Set of helper mobx decorators",
+  "repository": "farwayer/mobx-decorators",
+  "author": "farwayer <farwayer@gmail.com>",
+  "license": "WTFPL",
+  "keywords": [
+    "mobx",
+    "decorator",
+    "setter",
+    "set",
+    "toggle",
+    "intercept",
+    "observe"
+  ],
+  "dependencies": {
+    "mobx": "^2.7.0"
+  }
+}
