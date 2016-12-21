@@ -10,7 +10,10 @@ export function setter(customName, customValue) {
     Object.defineProperty(target, fnName, {
       @action
       value: function(value) {
-        value = (typeof customValue !== 'undefined') ? customValue : value;
+        if (withArgs && typeof customValue !== 'undefined') {
+          value = customValue;
+        }
+
         this[name] = value;
       }
     })

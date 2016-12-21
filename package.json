@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Set of helper mobx decorators",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
