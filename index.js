@@ -43,7 +43,7 @@ export function intercept(handler) {
     initializer: function() {
       // wait next tick to make sure observable initialized
       setTimeout(() => {
-        mobxIntercept(this, name, handler);
+        mobxIntercept(this, name, handler.bind(this));
       }, 0);
 
       return initializer ? initializer.call(this) : value;
@@ -58,7 +58,7 @@ export function observe(handler, invokeImmediately) {
     initializer: function() {
       // wait next tick to make sure observable initialized
       setTimeout(() => {
-        mobxObserve(this, name, handler, invokeImmediately);
+        mobxObserve(this, name, handler.bind(this), invokeImmediately);
       }, 0);
 
       return initializer ? initializer.call(this) : value;
