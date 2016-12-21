@@ -9,8 +9,8 @@ const invokeImmediately = true;
 class User {
   @setter
   @toggle
-  @set('login', true)
-  @set('logout', false)
+  @setter('login', true)
+  @setter('logout', false)
   @intercept(change => {
     console.log(change.newValue);
   })

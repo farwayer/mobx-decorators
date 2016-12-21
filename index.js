@@ -1,7 +1,7 @@
 import {action, intercept as mobxIntercept, observe as mobxObserve} from 'mobx'
 
 
-export function setter(customName) {
+export function setter(customName, customValue) {
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, name) {
@@ -10,6 +10,7 @@ export function setter(customName) {
     Object.defineProperty(target, fnName, {
       @action
       value: function(value) {
+        value = (typeof customValue !== 'undefined') ? customValue : value;
         this[name] = value;
       }
     })
@@ -33,17 +34,6 @@ export function toggle(customName) {
   }
 
   return decorate(withArgs, decorator, arguments);
-}
-
-export function set(customName, value) {
-  return (target, name) => {
-    Object.defineProperty(target, customName, {
-      @action
-      value: function() {
-        this[name] = value;
-      }
-    })
-  };
 }
 
 export function intercept(handler) {
