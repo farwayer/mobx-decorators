@@ -6,7 +6,7 @@ import {setter, toggle, set, intercept, observe} from 'mobx-decorators'
 
 const invokeImmediately = true;
 
-class Auth {
+class User {
   @setter
   @toggle
   @set('login', true)
@@ -22,10 +22,20 @@ class Auth {
   
   @setter('updateUserName')
   @observable
-  userName = "Jack";
+  name = "Jack";
   
   @toggle('swapTicket')
   @observable
   hasConcertTicket = true;
 }
+
+const user = new User();
+
+user.setLoggedIn(true);
+user.toggleLoggedIn();
+user.login();
+user.logout();
+
+user.updateUserName('John');
+user.swapTicket();
 ```
