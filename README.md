@@ -2,7 +2,7 @@
 
 ```js
 import {observable} from 'mobx'
-import {setter, toggle, set, intercept, observe} from 'mobx-decorators'
+import {setter, toggle, intercept, observe} from 'mobx-decorators'
 
 const invokeImmediately = true;
 
