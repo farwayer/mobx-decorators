@@ -18,41 +18,91 @@ npm install --save-dev babel-preset-es2015 \
 import {observable} from 'mobx'
 import {setter, toggle, intercept, observe} from 'mobx-decorators'
 
-const invokeImmediately = true;
-
 class User {
-  @toggle
   @setter
-  @setter('login', true)
-  @setter('logout', false)
-  @intercept(change => {
-    console.log(change.newValue);
-    return change;
-  })
-  @observe((newValue, oldValue) => {
-    console.log(newValue, oldValue);
-  }, invokeImmediately)
   @observable
-  loggedIn = true;
-  
-  @setter('updateUserName')
-  @observable
-  name = "Jack";
-  
-  @toggle('swapTicket')
-  @observable
-  hasConcertTicket = true;
+  loggedIn = false;
 }
 
 const user = new User();
+user.setLoggedIn(true); // user.loggedIn = true
+```
 
-user.setLoggedIn(true);
-user.toggleLoggedIn();
-user.login();
-user.logout();
+```js
+class User {
+  @setter('login', true)
+  @setter('logout', false)
+  @observable
+  loggedIn = false;
+}
 
-user.updateUserName('John');
-user.swapTicket();
+const user = new User();
+user.login(); // user.loggedIn = true
+user.logout(); // user.loggedIn = false
+```
+
+```js
+class User {
+  @setter('updateLoggedIn')
+  @observable
+  loggedIn = false;
+}
+
+const user = new User();
+user.updateLoggedIn(true); // user.loggedIn = true
+```
+
+```js
+class User {
+  @toggle
+  @observable
+  loggedIn = false;
+}
+
+const user = new User();
+user.toggleLoggedIn(); // user.loggedIn = !user.loggedIn
+```
+
+```js
+class User {
+  @toggle('swapLoggedIn')
+  @observable
+  loggedIn = false;
+}
+
+const user = new User();
+user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
+```
+
+```js
+const invokeImmediately = true;
+
+class User {
+  @observe((newValue, oldValue) => {
+    console.log(newValue, oldValue);
+  }, invokeImmediately)
+  @setter
+  @observable
+  loggedIn = false;
+}
+
+const user = new User(); // console.log(false, undefined)
+user.setLoggedIn(true); // console.log(true, false)
+```
+
+```js
+class User {
+  @intercept(change => {
+    change.newValue = 999;
+    return change;
+  })
+  @setter
+  @observable
+  loginCount = 0;
+}
+
+const user = new User();
+user.setLoginCount(1); // user.loginCount = 999;
 ```
 
 ## API
