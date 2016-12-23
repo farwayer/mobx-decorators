@@ -9,7 +9,7 @@ export function setter(customName, customValue) {
 
     Object.defineProperty(target, fnName, {
       @action
-      value: function(value) {
+      value: function (value) {
         if (withArgs && typeof customValue !== 'undefined') {
           value = customValue;
         }
@@ -30,7 +30,7 @@ export function toggle(customName) {
 
     Object.defineProperty(target, fnName, {
       @action
-      value: function() {
+      value: function () {
         this[name] = !this[name];
       }
     })
@@ -40,33 +40,35 @@ export function toggle(customName) {
 }
 
 export function intercept(handler) {
-  return (target, name, {initializer, value, ...description}) => ({
-    ...description,
-    writable: true,
-    initializer: function() {
-      // wait next tick to make sure observable initialized
-      setTimeout(() => {
-        mobxIntercept(this, name, handler.bind(this));
-      }, 0);
+  if (!invokedWithArgs(arguments)) {
+    throw new Error("@intercept must be called with handler argument");
+  }
 
-      return initializer ? initializer.call(this) : value;
+  return (target, name, description) => {
+    try {
+      return attachInitializers(target, name, description, obj => {
+        mobxIntercept(obj, name, handler.bind(obj));
+      })
+    } catch (error) {
+      throw new Error("@intercept must be defined before @observable");
     }
-  })
+  }
 }
 
 export function observe(handler, invokeImmediately) {
-  return (target, name, {initializer, value, ...description}) => ({
-    ...description,
-    writable: true,
-    initializer: function() {
-      // wait next tick to make sure observable initialized
-      setTimeout(() => {
-        mobxObserve(this, name, handler.bind(this), invokeImmediately);
-      }, 0);
+  if (!invokedWithArgs(arguments)) {
+    throw new Error("@observe must be called with handler argument");
+  }
 
-      return initializer ? initializer.call(this) : value;
+  return (target, name, description) => {
+    try {
+      return attachInitializers(target, name, description, obj => {
+        mobxObserve(obj, name, handler.bind(obj), invokeImmediately);
+      })
+    } catch (error) {
+      throw new Error("@observe must be defined before @observable");
     }
-  })
+  }
 }
 
 
@@ -90,4 +92,30 @@ function setterName(name, prefix = 'set') {
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function attachInitializers(target, name, {set, get, ...description}, init) {
+  if (!set || !get) throw new Error("set or get undefined");
+
+  target.__mobxDecoratorsInit = target.__mobxDecoratorsInit || [];
+  target.__mobxDecoratorsInit.push(init);
+
+  return {
+    ...description,
+    get: function () {
+      runInitializers(this);
+      return get.call(this, name);
+    },
+    set: function (value) {
+      runInitializers(this);
+      set.call(this, name, value);
+    }
+  }
+}
+
+function runInitializers(obj) {
+  if (!obj.__mobxDecoratorsInit) return;
+
+  obj.__mobxDecoratorsInit.forEach(init => init(obj));
+  obj.__mobxDecoratorsInit = null;
 }
