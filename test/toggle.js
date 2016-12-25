@@ -3,7 +3,7 @@ import {toggle} from '../'
 
 
 describe('toggle', () => {
-  it('should define @toggle with default name', () => {
+  it('should define toggle with default name', () => {
     class User {
       @toggle
       @observable
@@ -19,7 +19,7 @@ describe('toggle', () => {
   });
 
 
-  it('should define @toggle with custom name', () => {
+  it('should define toggle with custom name', () => {
     class User {
       @toggle('swapLoggedIn')
       @observable

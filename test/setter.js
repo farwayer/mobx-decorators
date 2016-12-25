@@ -3,7 +3,7 @@ import {setter} from '../'
 
 
 describe('setter', () => {
-  it('should define @setter with default name', () => {
+  it('should define setter with default name', () => {
     class User {
       @setter
       @observable
@@ -19,7 +19,7 @@ describe('setter', () => {
   });
 
 
-  it('should define @setter with custom name', () => {
+  it('should define setter with custom name', () => {
     class User {
       @setter('updateLoggedIn')
       @observable
@@ -35,7 +35,7 @@ describe('setter', () => {
   });
 
 
-  it('should define const @setter', () => {
+  it('should define const setter', () => {
     class User {
       @setter('login', true)
       @observable

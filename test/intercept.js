@@ -21,7 +21,7 @@ describe('intercept', () => {
   });
 
 
-  it('should @intercept be called', () => {
+  it('should handler be called', () => {
     let loginCount = -1;
 
     class User {
@@ -46,7 +46,7 @@ describe('intercept', () => {
   });
 
 
-  it('should @intercept chain works', () => {
+  it('should chain works', () => {
     let firstCalled = false, secondCalled = false;
 
     class User {
@@ -76,7 +76,7 @@ describe('intercept', () => {
   });
 
 
-  it('should @intercept change ignore works', () => {
+  it('should change ignore works', () => {
     class User {
       @intercept(() => {})
       @observable
@@ -95,7 +95,7 @@ describe('intercept', () => {
   });
 
 
-  it('should @intercept work in chain with @observe', () => {
+  it('should work in chain with @observe', () => {
     let firstCalled = false, secondCalled = false;
 
     class User {
@@ -122,7 +122,7 @@ describe('intercept', () => {
   });
 
 
-  it('should @intercept work with extending', () => {
+  it('should work with extending', () => {
     class Store {
       @intercept(change => change)
       @observable
@@ -150,5 +150,32 @@ describe('intercept', () => {
       const user = new User();
       user.login()
     }).should.not.throw()
+  });
+
+  it('should work if non-intercept property accessed before', () => {
+    let loginCount = -1;
+
+    class User {
+      @intercept(change => {
+        loginCount = change.newValue;
+        return change;
+      })
+      @observable
+      loginCount = 0;
+
+      @observable
+      name = "John";
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    const name = user.name;
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    loginCount.should.be.equal(1);
   });
 });

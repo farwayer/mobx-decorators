@@ -21,7 +21,7 @@ describe('observe', () => {
   });
 
 
-  it('should @observe be called', () => {
+  it('should handler be called', () => {
     let loginCount = -1;
 
     class User {
@@ -43,7 +43,7 @@ describe('observe', () => {
   });
 
 
-  it('should @observe chain works', () => {
+  it('should chain works', () => {
     let firstCalled = false, secondCalled = false;
 
     class User {
@@ -67,7 +67,7 @@ describe('observe', () => {
   });
 
 
-  it('should @observe with invokeImmediately called while init', () => {
+  it('should @observe with invokeBeforeFirstAccess called while access', () => {
     let loginCount = -1;
 
     class User {
@@ -81,7 +81,7 @@ describe('observe', () => {
     loginCount.should.be.equal(0);
   });
 
-  it('should @observe work with extending', () => {
+  it('should work with extending', () => {
     class Store {
       @observe(() => {})
       @observable
@@ -109,5 +109,30 @@ describe('observe', () => {
       const user = new User();
       user.login()
     }).should.not.throw()
+  });
+
+
+  it('should work if non-observe property accessed before', () => {
+    let loginCount = -1;
+
+    class User {
+      @observe(value => loginCount = value)
+      @observable
+      loginCount = 0;
+
+      @observable
+      name = "John";
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    const name = user.name;
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    loginCount.should.be.equal(1);
   });
 });
