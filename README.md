@@ -75,19 +75,39 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 ```
 
 ```js
-const invokeImmediately = true;
-
 class User {
   @observe((newValue, oldValue) => {
     console.log(newValue, oldValue);
-  }, invokeImmediately)
+  })
   @setter
   @observable
   loggedIn = false;
 }
 
-const user = new User(); // console.log(false, undefined)
+const user = new User();
 user.setLoggedIn(true); // console.log(true, false)
+
+
+// If invokeBeforeFirstAccess is true handler will be called one time before
+// property first access (set or get)
+const invokeBeforeFirstAccess = true;
+
+class AnotherUser {
+  @observe((newValue, oldValue) => {
+      console.log(newValue, oldValue);
+    }, invokeBeforeFirstAccess)
+    @setter
+    @observable
+    loggedIn = false;
+}
+
+const anotherUser1 = new AnotherUser();
+const loggedIn = user.loggedIn; // console.log(false, undefined)
+anotherUser1.setLoggedIn(true); // console.log(true, false)
+
+const anotherUser2 = new User();
+anotherUser1.setLoggedIn(true); // console.log(false, undefined)
+                                 // console.log(true, false)
 ```
 
 ```js
@@ -116,13 +136,13 @@ If `constValue` provided this value will be set every time setter called.
 
 Toggle boolean property (`property = !property`).
 
-### @observe(handler, [invokeImmediately])
+### @observe(handler, [invokeBeforeFirstAccess])
 
 **Must be defined before @observable**
 
 Handler will be called after property change.
-If `invokeImmediately` is `true` handler will be called one time right after
-initialization.
+If `invokeBeforeFirstAccess` is `true` handler will be called one time before
+property first access (set or get).
 
 More info can be found in
 [mobx docs](https://mobxjs.github.io/mobx/refguide/observe.html)
