@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Set of helper mobx decorators",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require should",
-    "publish": "npm test && npm publish"
+    "prepublish": "npm test"
   },
   "peerDependencies": {
     "mobx": "^2.7.0"
@@ -30,15 +30,5 @@
     "mobx": "^2.7.0",
     "mocha": "^3.2.0",
     "should": "^11.1.2"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ],
-    "plugins": [
-      "transform-decorators-legacy",
-      "transform-object-rest-spread",
-      "transform-class-properties"
-    ]
   }
 }
