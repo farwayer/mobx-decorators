@@ -120,4 +120,35 @@ describe('intercept', () => {
     firstCalled.should.be.true();
     secondCalled.should.be.true();
   });
+
+
+  it('should @intercept work with extending', () => {
+    class Store {
+      @intercept(change => change)
+      @observable
+      name = "Store";
+    }
+
+    class User extends Store {
+      @intercept(change => change)
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    class Post extends Store {
+      @intercept(change => change)
+      @observable
+      text = 0;
+    }
+
+    (() => {
+      const post = new Post();
+      const user = new User();
+      user.login()
+    }).should.not.throw()
+  });
 });

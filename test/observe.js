@@ -80,4 +80,34 @@ describe('observe', () => {
     user.should.have.property('loginCount').which.is.equal(0);
     loginCount.should.be.equal(0);
   });
+
+  it('should @observe work with extending', () => {
+    class Store {
+      @observe(() => {})
+      @observable
+      name = "Store";
+    }
+
+    class User extends Store {
+      @observe(() => {})
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    class Post extends Store {
+      @observe(() => {})
+      @observable
+      text = 0;
+    }
+
+    (() => {
+      const post = new Post();
+      const user = new User();
+      user.login()
+    }).should.not.throw()
+  });
 });

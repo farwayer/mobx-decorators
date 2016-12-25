@@ -97,7 +97,7 @@ function capitalize(str) {
 function attachInitializers(target, name, {set, get, ...description}, init) {
   if (!set || !get) throw new Error("set or get undefined");
 
-  target.__mobxDecoratorsInit = target.__mobxDecoratorsInit || [];
+  target.__mobxDecoratorsInit = (target.__mobxDecoratorsInit || []).slice();
   target.__mobxDecoratorsInit.push(init);
 
   return {
