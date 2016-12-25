@@ -46,7 +46,7 @@ export function intercept(handler) {
 
   return (target, name, description) => {
     try {
-      return attachInitializers(target, name, description, obj => {
+      attachInitializers(target, description, obj => {
         mobxIntercept(obj, name, handler.bind(obj));
       })
     } catch (error) {
@@ -62,7 +62,7 @@ export function observe(handler, invokeImmediately) {
 
   return (target, name, description) => {
     try {
-      return attachInitializers(target, name, description, obj => {
+      attachInitializers(target, description, obj => {
         mobxObserve(obj, name, handler.bind(obj), invokeImmediately);
       })
     } catch (error) {
@@ -94,28 +94,9 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function attachInitializers(target, name, {set, get, ...description}, init) {
+function attachInitializers(target, {set, get}, init) {
   if (!set || !get) throw new Error("set or get undefined");
 
-  target.__mobxDecoratorsInit = (target.__mobxDecoratorsInit || []).slice();
-  target.__mobxDecoratorsInit.push(init);
-
-  return {
-    ...description,
-    get: function () {
-      runInitializers(this);
-      return get.call(this, name);
-    },
-    set: function (value) {
-      runInitializers(this);
-      set.call(this, name, value);
-    }
-  }
-}
-
-function runInitializers(obj) {
-  if (!obj.__mobxDecoratorsInit) return;
-
-  obj.__mobxDecoratorsInit.forEach(init => init(obj));
-  obj.__mobxDecoratorsInit = null;
+  target.__mobxLazyInitializers = (target.__mobxLazyInitializers || []).slice();
+  target.__mobxLazyInitializers.push(init);
 }
