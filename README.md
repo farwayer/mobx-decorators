@@ -105,7 +105,7 @@ const anotherUser1 = new AnotherUser();
 const loggedIn = user.loggedIn; // console.log(false, undefined)
 anotherUser1.setLoggedIn(true); // console.log(true, false)
 
-const anotherUser2 = new User();
+const anotherUser2 = new AnotherUser();
 anotherUser1.setLoggedIn(true); // console.log(false, undefined)
                                  // console.log(true, false)
 ```
