@@ -76,8 +76,8 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 
 ```js
 class User {
-  @observe((newValue, oldValue) => {
-    console.log(newValue, oldValue);
+  @observe(change => {
+    console.log(change);
   })
   @setter
   @observable
@@ -93,12 +93,12 @@ user.setLoggedIn(true); // console.log(true, false)
 const invokeBeforeFirstAccess = true;
 
 class AnotherUser {
-  @observe((newValue, oldValue) => {
-      console.log(newValue, oldValue);
-    }, invokeBeforeFirstAccess)
-    @setter
-    @observable
-    loggedIn = false;
+  @observe(change => {
+    console.log(change);
+  }, invokeBeforeFirstAccess)
+  @setter
+  @observable
+  loggedIn = false;
 }
 
 const anotherUser1 = new AnotherUser();
@@ -156,3 +156,12 @@ or cancel change in handler.
 
 More info can be found in
 [mobx docs](https://mobxjs.github.io/mobx/refguide/observe.html)
+
+
+## Changelog
+
+### 2.0.0
+
+- Adopting to mobx3
+
+Mobx is passing change object to `observe` now. [More info is here](https://github.com/mobxjs/mobx/blob/master/CHANGELOG.md#other-changes)

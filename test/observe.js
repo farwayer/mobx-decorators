@@ -25,7 +25,7 @@ describe('observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(value => loginCount = value)
+      @observe(change => loginCount = change.newValue)
       @observable
       loginCount = 0;
 
@@ -71,7 +71,7 @@ describe('observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(value => loginCount = value, true)
+      @observe(change => loginCount = change.newValue, true)
       @observable
       loginCount = 0;
     }
@@ -116,7 +116,7 @@ describe('observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(value => loginCount = value)
+      @observe(change => loginCount = change.newValue)
       @observable
       loginCount = 0;
 
