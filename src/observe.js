@@ -7,10 +7,10 @@ export default function observe(handler, invokeImmediately) {
     throw new Error("@observe must be called with handler argument");
   }
 
-  return (target, name, description) => {
+  return (target, property, description) => {
     try {
       attachInitializers(target, description, obj => {
-        mobxObserve(obj, name, handler.bind(obj), invokeImmediately);
+        mobxObserve(obj, property, handler.bind(obj), invokeImmediately);
       })
     } catch (error) {
       throw new Error("@observe must be defined before @observable");

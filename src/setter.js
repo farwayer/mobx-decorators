@@ -5,8 +5,8 @@ import {invokedWithArgs, setterName, decorate} from './utils'
 export default function setter(customName, customValue) {
   const withArgs = invokedWithArgs(arguments);
 
-  function decorator(target, name) {
-    const fnName = (withArgs && customName) || setterName(name);
+  function decorator(target, property) {
+    const fnName = (withArgs && customName) || setterName(property);
 
     Object.defineProperty(target, fnName, {
       @action
@@ -15,7 +15,7 @@ export default function setter(customName, customValue) {
           value = customValue;
         }
 
-        this[name] = value;
+        this[property] = value;
       }
     })
   }

@@ -7,10 +7,10 @@ export default function intercept(handler) {
     throw new Error("@intercept must be called with handler argument");
   }
 
-  return (target, name, description) => {
+  return (target, property, description) => {
     try {
       attachInitializers(target, description, obj => {
-        mobxIntercept(obj, name, handler.bind(obj));
+        mobxIntercept(obj, property, handler.bind(obj));
       })
     } catch (error) {
       throw new Error("@intercept must be defined before @observable");

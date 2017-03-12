@@ -5,13 +5,13 @@ import {invokedWithArgs, setterName, decorate} from './utils'
 export default function toggle(customName) {
   const withArgs = invokedWithArgs(arguments);
 
-  function decorator(target, name) {
-    const fnName = (withArgs && customName) || setterName(name, 'toggle');
+  function decorator(target, property) {
+    const fnName = (withArgs && customName) || setterName(property, 'toggle');
 
     Object.defineProperty(target, fnName, {
       @action
       value: function () {
-        this[name] = !this[name];
+        this[property] = !this[property];
       }
     })
   }
