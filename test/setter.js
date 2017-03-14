@@ -2,7 +2,7 @@ import {observable} from 'mobx'
 import {setter} from '../'
 
 
-describe('setter', () => {
+describe('@setter', () => {
   it('should define setter with default name', () => {
     class User {
       @setter

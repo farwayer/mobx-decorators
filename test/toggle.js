@@ -2,7 +2,7 @@ import {observable} from 'mobx'
 import {toggle} from '../'
 
 
-describe('toggle', () => {
+describe('@toggle', () => {
   it('should define toggle with default name', () => {
     class User {
       @toggle

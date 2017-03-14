@@ -18,7 +18,7 @@ class Storage {
 }
 
 
-describe('save', () => {
+describe('@save', () => {
   it('should load value from storage', done => {
     const storage = new Storage({
       'user:loginCount': JSON.stringify(999),

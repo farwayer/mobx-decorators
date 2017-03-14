@@ -2,7 +2,7 @@ import {observable, action} from 'mobx'
 import {intercept, observe} from '../'
 
 
-describe('intercept', () => {
+describe('@intercept', () => {
   it('should throw if @intercept called without params', () => {
     (() => class User {
       @intercept
