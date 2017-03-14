@@ -3,7 +3,7 @@ import {observe} from '../'
 
 
 describe('observe', () => {
-  it('should fail if @observe called without params', () => {
+  it('should throw if @observe called without params', () => {
     (() => class User {
       @observe
       @observable
@@ -12,7 +12,7 @@ describe('observe', () => {
   });
 
 
-  it('should fail if @observe defined after @observable', () => {
+  it('should throw if @observe defined after @observable', () => {
     (() => class User {
       @observable
       @observe(() => {})

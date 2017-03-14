@@ -3,7 +3,7 @@ import {intercept, observe} from '../'
 
 
 describe('intercept', () => {
-  it('should fail if @intercept called without params', () => {
+  it('should throw if @intercept called without params', () => {
     (() => class User {
       @intercept
       @observable
@@ -12,7 +12,7 @@ describe('intercept', () => {
   });
 
 
-  it('should fail if @intercept defined after @observable', () => {
+  it('should throw if @intercept defined after @observable', () => {
     (() => class User {
       @observable
       @intercept(() => {})
