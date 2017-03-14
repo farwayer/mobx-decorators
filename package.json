@@ -15,8 +15,7 @@
     "observe"
   ],
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require should",
-    "prepublish": "npm test"
+    "test": "mocha --compilers js:babel-core/register --require should"
   },
   "peerDependencies": {
     "mobx": "^3.0.0"
