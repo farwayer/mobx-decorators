@@ -8,8 +8,7 @@ You also should use some transpiler (like babel).
 
 ```bash
 npm install --save-dev babel-preset-es2015 \
-  babel-plugin-transform-decorators-legacy \
-  babel-plugin-transform-object-rest-spread
+  babel-plugin-transform-decorators-legacy
 ```
 
 ## Examples
