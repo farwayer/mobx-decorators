@@ -163,4 +163,31 @@ describe('save', () => {
     const user = new User();
     user.lastLogin.should.be.eql(new Date(2017, 3, 15));
   });
+
+
+  it('should set user value if setter called before getter', done => {
+    const storage = new Storage({
+      'user:loginCount': JSON.stringify(999),
+    });
+
+    class User {
+      storeName = 'user';
+
+      @save({
+        storage,
+        onLoaded: () => done("onLoaded called"),
+        onInitialized: () => done(),
+      })
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount = 1;
+      }
+    }
+
+    const user = new User();
+    user.login();
+    user.loginCount.should.be.equal(1);
+  });
 });
