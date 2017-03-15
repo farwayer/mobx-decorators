@@ -32,7 +32,7 @@ export default function save({
         case Status.NotInitialized: {
           status = Status.Loading;
 
-          value = await loadProperty(storage, key, transform);
+          value = await loadValue(storage, key, transform);
 
           // check value was loaded and property was not modified by user
           if (value !== undefined && status === Status.Loading) {
@@ -58,7 +58,7 @@ export default function save({
         case Status.Loading: {
           status = Status.Initialized;
 
-          const saved = await saveProperty(storage, key, value);
+          const saved = await saveValue(storage, key, value);
           if (!saved) break;
 
           onSaved(store, property, value);
@@ -66,7 +66,7 @@ export default function save({
         }
 
         case Status.Initialized: {
-          const saved = await saveProperty(storage, key, value);
+          const saved = await saveValue(storage, key, value);
           if (!saved) break;
 
           onSaved(store, property, value);
@@ -79,14 +79,14 @@ export default function save({
   return decorate(withArgs, decorator, arguments);
 }
 
-async function loadProperty(storage, key, transform) {
+async function loadValue(storage, key, transform) {
   const json = await storage.getItem(key);
   if (!json) return;
 
   return transform(JSON.parse(json));
 }
 
-async function saveProperty(storage, key, value) {
+async function saveValue(storage, key, value) {
   const json = JSON.stringify(value);
   if (!json) return;
 
