@@ -49,4 +49,33 @@ describe('@setter', () => {
     user.login();
     user.should.have.property('loggedIn').which.is.true();
   });
+
+
+  it('should transform works', () => {
+    class User {
+      @setter(value => value.toUpperCase())
+      @observable
+      name;
+    }
+
+    const user = new User();
+    user.should.have.property('setName').which.is.a.Function();
+
+    user.setName('Alice');
+    user.should.have.property('name').which.is.equal('ALICE');
+  });
+
+  it('should transform works with custom name', () => {
+    class User {
+      @setter('updateName', value => value.toUpperCase())
+      @observable
+      name;
+    }
+
+    const user = new User();
+    user.should.have.property('updateName').which.is.a.Function();
+
+    user.updateName('Bob');
+    user.should.have.property('name').which.is.equal('BOB');
+  });
 });

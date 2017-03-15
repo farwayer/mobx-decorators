@@ -2,17 +2,29 @@ import {action} from 'mobx'
 import {invokedWithArgs, setterName, decorate} from './utils'
 
 
-export default function setter(customName, customValue) {
+export default function setter(name, customValue) {
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, property) {
-    const fnName = (withArgs && customName) || setterName(property);
+    if (!withArgs) {
+      name = undefined;
+      customValue = undefined;
+    }
 
-    Object.defineProperty(target, fnName, {
+    if (typeof name !== 'string') {
+      customValue = name;
+      name = undefined;
+    }
+
+    name = name || setterName(property);
+
+    Object.defineProperty(target, name, {
       @action
       value: function (value) {
-        if (withArgs && typeof customValue !== 'undefined') {
-          value = customValue;
+        if (customValue !== undefined) {
+          value = typeof customValue === 'function'
+            ? customValue(value)
+            : customValue;
         }
 
         this[property] = value;
