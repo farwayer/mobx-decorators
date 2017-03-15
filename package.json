@@ -15,7 +15,8 @@
     "observe"
   ],
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require should"
+    "test": "mocha --compilers js:babel-core/register --require should",
+    "cover": "istanbul cover _mocha --report lcovonly -- --compilers js:babel-core/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage"
   },
   "peerDependencies": {
     "mobx": "^3.0.0"
@@ -26,6 +27,8 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-classes": "^6.23.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
+    "coveralls": "^2.12.0",
+    "istanbul": "1.1.0-alpha.1",
     "mobx": "^3.1.7",
     "mocha": "^3.2.0",
     "should": "^11.2.1"
