@@ -1,4 +1,4 @@
-#MobX decorators
+# MobX decorators
 
 _Several helper MobX decorators_
 
@@ -7,7 +7,7 @@ _Several helper MobX decorators_
 
 1. [Installation](https://github.com/farwayer/mobx-decorators#installation)
 2. [Decorators](https://github.com/farwayer/mobx-decorators#decorators)
-  * [@setter](https://github.com/farwayer/mobx-decorators#seter)
+  * [@setter](https://github.com/farwayer/mobx-decorators#setter)
   * [@toggle](https://github.com/farwayer/mobx-decorators#toggle)
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
