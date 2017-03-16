@@ -12,7 +12,8 @@
     "set",
     "toggle",
     "intercept",
-    "observe"
+    "observe",
+    "save"
   ],
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require should",
