@@ -282,7 +282,6 @@ class User {
   storeName = 'user';
 
   @save
-  @setter
   @observable
   loginCount = 0;
 }
@@ -356,7 +355,6 @@ class User {
       return new Date(value)
     },
   })
-  @setter
   @observable
   lastLogin = new Date(2000, 1, 1);
 }
