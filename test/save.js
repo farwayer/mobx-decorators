@@ -175,7 +175,7 @@ describe('@save', () => {
 
       @save({
         storage,
-        onLoaded: () => done("onLoaded called"),
+        onLoaded: () => done(new Error("onLoaded called")),
         onInitialized: () => done(),
       })
       @observable
@@ -189,5 +189,36 @@ describe('@save', () => {
     const user = new User();
     user.login();
     user.loginCount.should.be.equal(1);
+  });
+
+  it('should work with extending', done => {
+    const storage = new Storage({
+      'user:loginCount': JSON.stringify(999),
+      'admin:loginCount': JSON.stringify(888),
+    });
+
+    class BaseUser {
+      @save({storage})
+      @observable
+      loginCount = 0;
+    }
+
+    class User extends BaseUser {
+      storeName = 'user';
+    }
+    class Admin extends BaseUser {
+      storeName = 'admin';
+    }
+
+    const user = new User();
+    const admin = new Admin();
+    user.loginCount.should.be.equal(0);
+    admin.loginCount.should.be.equal(0);
+
+    setTimeout(() => {
+      user.loginCount.should.be.equal(999);
+      admin.loginCount.should.be.equal(888);
+      done();
+    });
   });
 });

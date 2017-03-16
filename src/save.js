@@ -22,21 +22,21 @@ export default function save({
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, property, description) {
-    let status = Status.NotInitialized;
+    const status = new PropertyStatus();
 
     return observe(async function ({newValue: value}) {
       const store = this;
       const key = storageKey(store, storeName, property);
 
-      switch (status) {
+      switch (status.get(key)) {
         case Status.NotInitialized: {
-          status = Status.Loading;
+          status.set(key, Status.Loading);
 
           value = await loadValue(storage, key, transform);
 
           // check value was loaded and property was not modified by user
-          if (value !== undefined && status === Status.Loading) {
-            status = Status.SettingLoadedValue;
+          if (value !== undefined && status.get(key) === Status.Loading) {
+            status.set(key, Status.SettingLoadedValue);
 
             runInAction(`loading ${key} from storage`, () => {
               store[property] = value;
@@ -50,13 +50,13 @@ export default function save({
         }
 
         case Status.SettingLoadedValue: {
-          status = Status.Initialized;
+          status.set(key, Status.Initialized);
           break;
         }
 
         // property was modified by user while loading
         case Status.Loading: {
-          status = Status.Initialized;
+          status.set(key, Status.Initialized);
 
           const saved = await saveValue(storage, key, value);
           if (!saved) break;
@@ -103,6 +103,18 @@ function storageKey(store, storeName=store.storeName, property) {
   }
 
   return `${storeName}:${property}`;
+}
+
+class PropertyStatus {
+  statuses = {};
+
+  set(key, status) {
+    this.statuses[key] = status;
+  }
+
+  get(key) {
+    return this.statuses[key];
+  }
 }
 
 function defaultStorage() {
