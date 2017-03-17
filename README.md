@@ -3,7 +3,7 @@
 _Several helper MobX decorators_
 
 [![Build Status](https://img.shields.io/travis/farwayer/mobx-decorators.svg)](https://travis-ci.org/farwayer/mobx-decorators)
-[![Coverage Status](https://img.shields.io/coveralls/farwayer/mobx-decorators.svg)]())](https://coveralls.io/github/farwayer/mobx-decorators?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/farwayer/mobx-decorators.svg)](https://coveralls.io/github/farwayer/mobx-decorators?branch=master)
 
 1. [Installation](https://github.com/farwayer/mobx-decorators#installation)
 2. [Decorators](https://github.com/farwayer/mobx-decorators#decorators)
