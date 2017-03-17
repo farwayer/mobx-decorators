@@ -23,7 +23,7 @@
     "build": "babel src --out-dir lib",
     "test": "mocha --compilers js:babel-core/register --require should",
     "cover": "istanbul cover _mocha --report lcovonly -- --compilers js:babel-core/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
-    "publish": "npm run test && npm run build && npm publish"
+    "publish": "npm run test && npm run build"
   },
   "peerDependencies": {
     "mobx": "^3.0.0"
