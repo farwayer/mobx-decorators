@@ -24,14 +24,8 @@ npm install --save mobx-decorators
 You also should use some transpiler (like babel).
 
 ```bash
-npm install --save-dev babel-preset-es2015 \
-  babel-plugin-transform-decorators-legacy \
-  babel-plugin-transform-class-properties \
-  babel-plugin-transform-object-rest-spread
+npm install --save-dev babel-plugin-transform-decorators-legacy
 ```
-
-**`transform-decorators-legacy` must be defined before
-`transform-class-properties` in babel config.**
 
 
 ## Decorators
