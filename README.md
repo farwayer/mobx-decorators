@@ -423,6 +423,7 @@ user.setName('Alice'); // user.name = 'ALICE'
 ```
 
 - `save`, `createSaveDecorator`
+- transpiled version
 
 ### 2.0.0
 
