@@ -427,7 +427,7 @@ const user = new User();
 user.setName('Alice'); // user.name = 'ALICE'
 ```
 
-- `save`
+- `save`, `createSaveDecorator`
 
 ### 2.0.0
 
