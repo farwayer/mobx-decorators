@@ -1,4 +1,4 @@
-import {createSaveDecorator} from './save'
+import {createDecorator} from './save'
 
 
 class AsyncLocalStorage {
@@ -22,10 +22,12 @@ class MemoryStorage {
 }
 
 
-export default createSaveDecorator({
-  storage: typeof navigator === 'undefined'
-    ? MemoryStorage
-    : AsyncLocalStorage
-})
+const Storage = typeof navigator === 'undefined'
+  ? MemoryStorage
+  : AsyncLocalStorage;
 
-export {createSaveDecorator}
+export function createSaveDecorator(baseOptions) {
+  return createDecorator(Storage, baseOptions);
+}
+
+export default createSaveDecorator()

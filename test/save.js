@@ -5,8 +5,8 @@ import {save, createSaveDecorator} from '../'
 class Storage {
   db = {};
 
-  constructor(state) {
-    this.db = Object.assign(this.db, state);
+  constructor(state = {}) {
+    this.db = state;
   }
 
   async getItem(key) {

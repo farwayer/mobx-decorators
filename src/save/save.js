@@ -11,13 +11,15 @@ const Status = {
 };
 
 
-export function createSaveDecorator(baseOptions={}) {
+export function createDecorator(storage, baseOptions = {}) {
+  baseOptions = {storage, ...baseOptions};
+
   return function (options) {
     if (!invokedWithArgs(arguments)) {
       return save(baseOptions)(...arguments);
     }
 
-    options = Object.assign({}, baseOptions, options);
+    options = {...baseOptions, ...options};
     return save(options);
   }
 }
@@ -31,10 +33,6 @@ export default function save({
   onSaved = () => {},
   onInitialized = () => {},
 } = {}) {
-  if (!storage) {
-    throw new Error('Storage must be defined');
-  }
-
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, property, description) {

@@ -1,9 +1,9 @@
-import {createSaveDecorator} from './save'
+import {createDecorator} from './save'
 import {AsyncStorage} from 'react-native'
 
 
-export default createSaveDecorator({
-  storage: AsyncStorage
-})
+export function createSaveDecorator(baseOptions) {
+  return createDecorator(AsyncStorage, baseOptions);
+}
 
-export {createSaveDecorator}
+export default createSaveDecorator()
