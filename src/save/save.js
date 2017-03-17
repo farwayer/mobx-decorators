@@ -59,14 +59,15 @@ export default function save({
             onLoaded(store, property, value);
           }
 
+          status.set(key, Status.Initialized);
+
           onInitialized(store, property, value);
           break;
         }
 
-        case Status.SettingLoadedValue: {
+        case Status.SettingLoadedValue:
           status.set(key, Status.Initialized);
           break;
-        }
 
         // property was modified by user while loading
         case Status.Loading: {
