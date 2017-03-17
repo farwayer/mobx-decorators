@@ -15,6 +15,7 @@
     "observe",
     "save"
   ],
+  "react-native": "index.react-native.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require should",
     "cover": "istanbul cover _mocha --report lcovonly -- --compilers js:babel-core/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage"

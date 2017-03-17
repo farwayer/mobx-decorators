@@ -1,6 +1,6 @@
 import {runInAction} from 'mobx'
-import observe from './observe'
-import {invokedWithArgs, decorate} from './utils'
+import observe from '../observe'
+import {invokedWithArgs, decorate} from '../utils'
 
 
 const Status = {
@@ -11,14 +11,30 @@ const Status = {
 };
 
 
+export function createSaveDecorator(baseOptions={}) {
+  return function (options) {
+    if (!invokedWithArgs(arguments)) {
+      return save(baseOptions)(...arguments);
+    }
+
+    options = Object.assign({}, baseOptions, options);
+    return save(options);
+  }
+}
+
+
 export default function save({
-  storage = defaultStorage(),
+  storage,
   storeName,
   transform = item => item,
   onLoaded = () => {},
   onSaved = () => {},
   onInitialized = () => {},
 } = {}) {
+  if (!storage) {
+    throw new Error('Storage must be defined');
+  }
+
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, property, description) {
@@ -97,8 +113,8 @@ async function saveValue(storage, key, value) {
 function storageKey(store, storeName=store.storeName, property) {
   if (!storeName) {
     throw new Error(
-      "You must define `storeName` property in store or pass it as option to " +
-      "@save"
+      "`storeName` must be defined as property in store or passed as option " +
+      "to @save decorator"
     );
   }
 
@@ -114,39 +130,5 @@ class PropertyStatus {
 
   get(key) {
     return this.statuses[key];
-  }
-}
-
-function defaultStorage() {
-  if (typeof navigator === 'undefined') {
-    return MemoryStorage;
-  }
-
-  switch (navigator.product) {
-    case 'ReactNative':
-      return require('react-native').AsyncStorage;
-
-    default:
-      return AsyncLocalStorage;
-  }
-}
-
-export class AsyncLocalStorage {
-  static async getItem(key) {
-    return localStorage.getItem(key);
-  }
-  static async setItem(key, value) {
-    return localStorage.setItem(key, value);
-  }
-}
-
-export class MemoryStorage {
-  static db = {};
-
-  static async getItem(key) {
-    return MemoryStorage.db[key];
-  }
-  static async setItem(key, value) {
-    return MemoryStorage.db[key] = value;
   }
 }

@@ -237,6 +237,7 @@ user.setLoginCount(1); // user.loginCount = 0;
 &nbsp;&nbsp;onSaved = (store, property, value) => {},  
 &nbsp;&nbsp;onInitialized = (store, property, value) => {},  
 })*  
+*createSaveDecorator(baseOptions={})
 
 **Must be defined before @observable**
 
@@ -272,9 +273,12 @@ const MyStorage = {
 }
 ```
 
+If you need to pass the same options (storage for example) to `@save` decorator of
+several properties than you can use `createSaveDecorator` function. 
+
 ```js
 import {observable} from 'mobx'
-import {save} from 'mobx-decorators'
+import {save, createSaveDecorator} from 'mobx-decorators'
 ```
 
 ```js
@@ -361,6 +365,48 @@ class User {
 
 const user = new User();
 console.log(user.lastLogin);
+```
+
+```js
+const save = createSaveDecorator({
+  storage: MyOwnStorage,
+  storeName: 'user',
+});
+
+class User {
+  @save
+  @observable
+  loginCount = 0;
+  
+  @save
+  @observable
+  name = 'noname';
+}
+
+const user = new User();
+console.log(user.loginCount);
+```
+
+```js
+const save = createSaveDecorator({
+  storage: MyOwnStorage,
+  storeName: 'user',
+});
+
+class User {
+  @save({
+    onInitialized: () => console.log('initialized')
+  })
+  @observable
+  loginCount = 0;
+  
+  @save
+  @observable
+  name = 'noname';
+}
+
+const user = new User();
+console.log(user.loginCount);
 ```
 
 

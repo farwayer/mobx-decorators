@@ -1,5 +1,5 @@
 import {observable, action} from 'mobx'
-import {save} from '../'
+import {save, createSaveDecorator} from '../'
 
 
 class Storage {
@@ -191,6 +191,7 @@ describe('@save', () => {
     user.loginCount.should.be.equal(1);
   });
 
+
   it('should work with extending', done => {
     const storage = new Storage({
       'user:loginCount': JSON.stringify(999),
@@ -220,5 +221,59 @@ describe('@save', () => {
       admin.loginCount.should.be.equal(888);
       done();
     });
+  });
+
+
+  it('should createSaveDecorator works', done => {
+    const storage = new Storage({
+      'user:loginCount': JSON.stringify(999),
+    });
+
+    const save = createSaveDecorator({
+      storage,
+      storeName: 'user',
+      onInitialized: (store, property, value) => {
+        value.should.be.equal(999);
+        store.loginCount.should.be.equal(999);
+        done();
+      }
+    });
+
+    class User {
+      @save
+      @observable
+      loginCount = 0;
+    }
+
+    const user = new User();
+    user.loginCount.should.be.equal(0);
+  });
+
+
+  it('should createSaveDecorator works with overriding', done => {
+    const storage = new Storage({
+      'user:loginCount': JSON.stringify(999),
+    });
+
+    const save = createSaveDecorator({
+      storage,
+      storeName: 'non-exist',
+    });
+
+    class User {
+      @save({
+        storeName: 'user',
+        onInitialized: (store, property, value) => {
+          value.should.be.equal(999);
+          store.loginCount.should.be.equal(999);
+          done();
+        }
+      })
+      @observable
+      loginCount = 0;
+    }
+
+    const user = new User();
+    user.loginCount.should.be.equal(0);
   });
 });
