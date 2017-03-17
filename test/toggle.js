@@ -1,5 +1,5 @@
 import {observable} from 'mobx'
-import {toggle} from '../'
+import {toggle} from '../src'
 
 
 describe('@toggle', () => {

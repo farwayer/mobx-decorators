@@ -1,5 +1,5 @@
 import {observable, action} from 'mobx'
-import {intercept, observe} from '../'
+import {intercept, observe} from '../src'
 
 
 describe('@intercept', () => {

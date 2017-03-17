@@ -1,5 +1,6 @@
 .idea/
 test/
+lib/
 .babelrc
 yarn.lock
 .npmignore

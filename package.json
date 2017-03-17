@@ -15,25 +15,35 @@
     "observe",
     "save"
   ],
-  "react-native": "index.react-native.js",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "module": "src/index.js",
+  "react-native": "src/index.react-native.js",
   "scripts": {
+    "build": "babel src --out-dir lib",
     "test": "mocha --compilers js:babel-core/register --require should",
-    "cover": "istanbul cover _mocha --report lcovonly -- --compilers js:babel-core/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage"
+    "cover": "istanbul cover _mocha --report lcovonly -- --compilers js:babel-core/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
+    "publish": "npm run test && npm run build && npm publish"
   },
   "peerDependencies": {
     "mobx": "^3.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.24.0",
+    "babel-cli": "^6.24.0",
     "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-classes": "^6.23.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-regenerator": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "coveralls": "^2.12.0",
     "istanbul": "1.1.0-alpha.1",
     "mobx": "^3.1.7",
     "mocha": "^3.2.0",
     "should": "^11.2.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0"
   }
 }

@@ -3,6 +3,11 @@
     "transform-decorators-legacy",
     "transform-class-properties",
     "transform-object-rest-spread",
+    "transform-regenerator",
+    ["transform-runtime", {
+      "helpers": false,
+      "polyfill": false
+    }],
     "transform-es2015-classes",
     "transform-es2015-modules-commonjs"
   ]
