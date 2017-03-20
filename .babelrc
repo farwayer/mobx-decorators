@@ -1,4 +1,7 @@
 {
+  "presets": [
+    "es2015"
+  ],
   "plugins": [
     "transform-decorators-legacy",
     "transform-class-properties",
@@ -7,9 +10,6 @@
     ["transform-runtime", {
       "helpers": false,
       "polyfill": false
-    }],
-    "transform-es2015-classes",
-    "transform-es2015-modules-commonjs",
-    "transform-es2015-spread"
+    }]
   ]
 }
