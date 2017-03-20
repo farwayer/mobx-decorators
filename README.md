@@ -407,6 +407,10 @@ console.log(user.loginCount);
 
 ## Changelog
 
+### 2.1.1
+
+- transpiling with es2015 preset now
+
 ### 2.1.0
 
 - `setter`: you can provide transform function now
