@@ -130,12 +130,12 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 
 ### @observe
 
-*@observe(onChange: change =>)*  
-*@observe(onChange: change =>, invokeBeforeFirstAccess)*
+*@observe(onChanged: change =>)*  
+*@observe(onChanged: change =>, invokeBeforeFirstAccess)*
 
 **Must be defined before @observable**
 
-`onChange` will be called after property change.
+`onChanged` will be called *after* property change.
 
 If `invokeBeforeFirstAccess` is `true` handler will be called one time before
 property first access (set or get).
@@ -183,7 +183,7 @@ user2.setLoggedIn(true); // console.log(false)
 
 **Must be defined before @observable**
 
-`onWillChange` will be called before property change.
+`onWillChange` will be called *before* property change.
 You can replace value or cancel change in handler.
 
 More info can be found in
@@ -232,14 +232,14 @@ user.setLoginCount(1); // user.loginCount = 0;
 &nbsp;&nbsp;onSaved = (store, property, value) => {},  
 &nbsp;&nbsp;onInitialized = (store, property, value) => {},  
 })*  
-*createSaveDecorator(baseOptions={})
+*createSaveDecorator(baseOptions={})*
 
 **Must be defined before @observable**
 
 `@save` decorator helps save and load observable value to/from permanent
 storage. Keep in mind `@save` is *lazy* decorator and loading will be started
-only after first property access. If you change property before value will be
-loaded than restored value will be ignored.
+only after first property access. If you change property before or during
+loading than restored value will be ignored.
 
 `onLoaded` callback will be called only if value is loaded from storage.  
 `onSave` will be called after saving.  
@@ -268,8 +268,8 @@ const MyStorage = {
 }
 ```
 
-If you need to pass the same options (storage for example) to `@save` decorator of
-several properties than you can use `createSaveDecorator` function. 
+If you need to pass the same options (storage for example) to `@save` decorator
+of several properties than you can use `createSaveDecorator` function. 
 
 ```js
 import {observable} from 'mobx'
