@@ -5,7 +5,7 @@ import {invokedWithArgs, setterName, decorate} from './utils'
 export default function setter(name, customValue) {
   const withArgs = invokedWithArgs(arguments);
 
-  function decorator(target, property) {
+  function decorator(target, property, description) {
     if (!withArgs) {
       name = undefined;
       customValue = undefined;
@@ -29,7 +29,9 @@ export default function setter(name, customValue) {
 
         this[property] = value;
       }
-    })
+    });
+
+    return {...description, configurable: true};
   }
 
   return decorate(withArgs, decorator, arguments);

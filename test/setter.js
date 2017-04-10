@@ -65,6 +65,7 @@ describe('@setter', () => {
     user.should.have.property('name').which.is.equal('ALICE');
   });
 
+
   it('should transform works with custom name', () => {
     class User {
       @setter('updateName', value => value.toUpperCase())
@@ -77,5 +78,18 @@ describe('@setter', () => {
 
     user.updateName('Bob');
     user.should.have.property('name').which.is.equal('BOB');
+  });
+
+
+  it('should leave property configurable', () => {
+    class User {
+      @setter
+      loggedIn;
+    }
+
+    const user = new User();
+
+    const desc = Object.getOwnPropertyDescriptor(user, 'loggedIn');
+    desc.configurable.should.be.true();
   });
 });

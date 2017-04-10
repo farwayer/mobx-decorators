@@ -33,4 +33,17 @@ describe('@toggle', () => {
     user.swapLoggedIn();
     user.should.have.property('loggedIn').which.is.true();
   });
+
+
+  it('should leave property configurable', () => {
+    class User {
+      @toggle
+      loggedIn;
+    }
+
+    const user = new User();
+
+    const desc = Object.getOwnPropertyDescriptor(user, 'loggedIn');
+    desc.configurable.should.be.true();
+  });
 });
