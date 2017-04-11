@@ -180,4 +180,15 @@ describe('@allObservable', () => {
     desc.should.has.property('get').which.is.Function();
     desc.should.has.property('set').which.is.Function();
   });
+
+
+  it('should work as function without arguments', () => {
+    (() => {
+      @allObservable()
+      class User {
+        name = 'unknown';
+        loginCount = 0;
+      }
+    }).should.not.throw();
+  });
 });

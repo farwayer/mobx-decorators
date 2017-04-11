@@ -1,5 +1,6 @@
 import {observable, action} from 'mobx'
 import {save, createSaveDecorator} from '../src'
+import {default as basicSave} from '../src/save/save'
 
 
 class Storage {
@@ -275,5 +276,21 @@ describe('@save', () => {
 
     const user = new User();
     user.loginCount.should.be.equal(0);
+  });
+
+
+  it('should work as function without arguments', () => {
+    (() => {
+      class User {
+        storeName = 'user';
+
+        @basicSave()
+        @observable
+        loginCount = 0;
+      }
+
+      const user = new User();
+      user.loginCount.should.be.equal(0);
+    }).should.not.throw();
   });
 });
