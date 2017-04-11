@@ -7,9 +7,11 @@ export default function observe(handler, invokeImmediately) {
     throw new Error("@observe must be called with handler argument");
   }
 
-  return (target, property) => {
+  return (target, property, description) => {
     attachInitializer(target, store => {
       mobxObserve(store, property, handler.bind(store), invokeImmediately);
     });
+
+    return {...description, configurable: true};
   }
 }

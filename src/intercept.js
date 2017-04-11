@@ -7,9 +7,11 @@ export default function intercept(handler) {
     throw new Error("@intercept must be called with handler argument");
   }
 
-  return (target, property) => {
+  return (target, property, description) => {
     attachInitializer(target, store => {
       mobxIntercept(store, property, handler.bind(store));
     });
+
+    return {...description, configurable: true};
   }
 }
