@@ -12,6 +12,7 @@ _Several helper MobX decorators_
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
   * [@save](https://github.com/farwayer/mobx-decorators#save)
+  * [@allObservable](https://github.com/farwayer/mobx-decorators#allObservable)
 3. [Changelog](https://github.com/farwayer/mobx-decorators#changelog)
 
 
@@ -42,6 +43,8 @@ Create setter for `property` with `setProperty` or custom name.
 
 If `constValue` provided this value will be set every time setter called.
 You can also provide transform function.
+
+With `transformFn` function you can change value that will be set.    
 
 ```js
 import {observable} from 'mobx'
@@ -94,6 +97,7 @@ const user = new User();
 user.setName('Alice'); // user.name = 'ALICE'
 ```
 
+
 ### @toggle
 
 *@toggle*  
@@ -127,6 +131,7 @@ class User {
 const user = new User();
 user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 ```
+
 
 ### @observe
 
@@ -177,6 +182,7 @@ user2.setLoggedIn(true); // console.log(false)
                          // console.log(true)
 ```
 
+
 ### @intercept
 
 *@intercept(onWillChange: change =>)*  
@@ -220,6 +226,7 @@ class User {
 const user = new User();
 user.setLoginCount(1); // user.loginCount = 0;
 ```
+
 
 ### @save
 
@@ -405,15 +412,63 @@ console.log(user.loginCount);
 ```
 
 
+### @allObservable
+
+*@allObservable*  
+*@allObservable({  
+&nbsp;&nbsp;only,  
+&nbsp;&nbsp;except = [],  
+})*  
+
+Class decorator that makes all properties observable. Use `only` for
+whitelisting properties and `except` for blacklisting.  
+
+```js
+import {allObservable} from 'mobx-decorators'
+```
+
+```js
+@allObservable
+class User {
+  name = 'unknown';
+  loginCount = 0;
+}
+```
+
+```js
+@allObservable({only: ['loginCount']})
+class User {
+  name = 'unknown';
+  loginCount = 0;
+}
+```
+
+```js
+@allObservable({except: ['name']})
+class User {
+  name = 'unknown';
+  loginCount = 0;
+}
+```
+
+
 ## Changelog
+
+### 2.2.0
+
+- `@allObservable`
+- `@save`, `@observe` and `@intercept` can be defined after `@observable` now
+- decorators return configurable properties now
+
 
 ### 2.1.1
 
 - transpiling with es2015 preset now
 
+
 ### 2.1.0
 
-- `setter`: you can provide transform function now
+- `@setter`: you can provide transform function now
 
 ```js
 class User {
@@ -426,13 +481,14 @@ const user = new User();
 user.setName('Alice'); // user.name = 'ALICE'
 ```
 
-- `save`, `createSaveDecorator`
+- `@save`, `@createSaveDecorator`
 - transpiled version
+
 
 ### 2.0.0
 
 - Adopting to mobx3
 
-`observe` callback receive change argument now (
+`@observe` callback receive change argument now (
 [more info](https://github.com/mobxjs/mobx/blob/master/CHANGELOG.md#other-changes)
 )
