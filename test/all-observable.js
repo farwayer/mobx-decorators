@@ -167,4 +167,17 @@ describe('@allObservable', () => {
     isObservable(user, 'loginCount').should.be.true();
     isObservable(user, 'name').should.be.true();
   });
+
+
+  it('should define getter and setter for each observable property', () => {
+    @allObservable
+    class User {
+      loginCount = 0;
+    }
+
+    const user = new User();
+    const desc = Object.getOwnPropertyDescriptor(user, 'loginCount');
+    desc.should.has.property('get').which.is.Function();
+    desc.should.has.property('set').which.is.Function();
+  });
 });

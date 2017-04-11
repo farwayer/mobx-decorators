@@ -21,8 +21,9 @@ export default function allObservable({
       props = difference(props, except);
 
       props.forEach(prop => {
-        const desc = Object.getOwnPropertyDescriptor(store, prop);
-        observable(store, prop, desc);
+        let desc = Object.getOwnPropertyDescriptor(store, prop);
+        desc = observable(store, prop, desc);
+        Object.defineProperty(store, prop, desc);
       });
 
       return store;
