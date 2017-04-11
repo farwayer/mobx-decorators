@@ -33,6 +33,10 @@ export default function save({
   onSaved = () => {},
   onInitialized = () => {},
 } = {}) {
+  if (!storage) {
+    throw new Error("Storage must be defined");
+  }
+
   const withArgs = invokedWithArgs(arguments);
 
   function decorator(target, property, description) {

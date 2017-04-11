@@ -279,7 +279,7 @@ describe('@save', () => {
   });
 
 
-  it('should work as function without arguments', () => {
+  it('should throw if no storage defined', () => {
     (() => {
       class User {
         storeName = 'user';
@@ -291,6 +291,6 @@ describe('@save', () => {
 
       const user = new User();
       user.loginCount.should.be.equal(0);
-    }).should.not.throw();
+    }).should.throw();
   });
 });
