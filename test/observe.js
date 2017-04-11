@@ -12,15 +12,6 @@ describe('@observe', () => {
   });
 
 
-  it('should throw if @observe defined after @observable', () => {
-    (() => class User {
-      @observable
-      @observe(() => {})
-      loggedIn = false;
-    }).should.throw()
-  });
-
-
   it('should handler be called', () => {
     let loginCount = -1;
 
@@ -134,5 +125,51 @@ describe('@observe', () => {
     user.login();
     user.should.have.property('loginCount').which.is.equal(1);
     loginCount.should.be.equal(1);
+  });
+
+
+  it('should work if @observable defined before @observe', () => {
+    let loginCount = -1;
+
+    class User {
+      @observable
+      @observe(change => loginCount = change.newValue)
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    loginCount.should.be.equal(1);
+  });
+
+
+  it('should chain works if @observable defined before @observe', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class User {
+      @observable
+      @observe(() => firstCalled = true)
+      @observe(() => secondCalled = true)
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
   });
 });

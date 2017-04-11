@@ -133,7 +133,7 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 *@observe(onChanged: change =>)*  
 *@observe(onChanged: change =>, invokeBeforeFirstAccess)*
 
-**Must be defined before @observable**
+**Don't work with TypeScript yet (sorry)**
 
 `onChanged` will be called *after* property change.
 
@@ -181,7 +181,7 @@ user2.setLoggedIn(true); // console.log(false)
 
 *@intercept(onWillChange: change =>)*  
 
-**Must be defined before @observable**
+**Don't work with TypeScript yet (sorry)**
 
 `onWillChange` will be called *before* property change.
 You can replace value or cancel change in handler.
@@ -234,7 +234,7 @@ user.setLoginCount(1); // user.loginCount = 0;
 })*  
 *createSaveDecorator(baseOptions={})*
 
-**Must be defined before @observable**
+**Don't work with TypeScript yet (sorry)**
 
 `@save` decorator helps save and load observable value to/from permanent
 storage. Keep in mind `@save` is *lazy* decorator and loading will be started

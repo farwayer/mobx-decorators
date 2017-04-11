@@ -1,5 +1,5 @@
 import {intercept as mobxIntercept} from 'mobx'
-import {invokedWithArgs, attachInitializers} from './utils'
+import {invokedWithArgs, attachInitializer} from './utils'
 
 
 export default function intercept(handler) {
@@ -7,13 +7,9 @@ export default function intercept(handler) {
     throw new Error("@intercept must be called with handler argument");
   }
 
-  return (target, property, description) => {
-    try {
-      attachInitializers(target, description, obj => {
-        mobxIntercept(obj, property, handler.bind(obj));
-      })
-    } catch (error) {
-      throw new Error("@intercept must be defined before @observable");
-    }
+  return (target, property) => {
+    attachInitializer(target, store => {
+      mobxIntercept(store, property, handler.bind(store));
+    });
   }
 }

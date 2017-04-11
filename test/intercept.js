@@ -12,15 +12,6 @@ describe('@intercept', () => {
   });
 
 
-  it('should throw if @intercept defined after @observable', () => {
-    (() => class User {
-      @observable
-      @intercept(() => {})
-      loggedIn = false;
-    }).should.throw()
-  });
-
-
   it('should handler be called', () => {
     let loginCount = -1;
 
@@ -177,5 +168,57 @@ describe('@intercept', () => {
     user.login();
     user.should.have.property('loginCount').which.is.equal(1);
     loginCount.should.be.equal(1);
+  });
+
+
+  it('should work if @observable defined before @intercept', () => {
+    let loginCount = -1;
+
+    class User {
+      @observable
+      @intercept(change => {
+        loginCount = change.newValue;
+        return change;
+      })
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    loginCount.should.be.equal(1);
+  });
+
+
+  it('should work in chain with @observe if @observable defined before', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class User {
+      @observable
+      @observe(() => firstCalled = true)
+      @intercept(change => {
+        secondCalled = true;
+        return change;
+      })
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
   });
 });

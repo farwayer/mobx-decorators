@@ -1,5 +1,5 @@
 import {observe as mobxObserve} from 'mobx'
-import {invokedWithArgs, attachInitializers} from './utils'
+import {invokedWithArgs, attachInitializer} from './utils'
 
 
 export default function observe(handler, invokeImmediately) {
@@ -7,13 +7,9 @@ export default function observe(handler, invokeImmediately) {
     throw new Error("@observe must be called with handler argument");
   }
 
-  return (target, property, description) => {
-    try {
-      attachInitializers(target, description, obj => {
-        mobxObserve(obj, property, handler.bind(obj), invokeImmediately);
-      })
-    } catch (error) {
-      throw new Error("@observe must be defined before @observable");
-    }
+  return (target, property) => {
+    attachInitializer(target, store => {
+      mobxObserve(store, property, handler.bind(store), invokeImmediately);
+    });
   }
 }
