@@ -12,7 +12,7 @@ _Several helper MobX decorators_
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
   * [@save](https://github.com/farwayer/mobx-decorators#save)
-  * [@allObservable](https://github.com/farwayer/mobx-decorators#allObservable)
+  * [@allObservable](https://github.com/farwayer/mobx-decorators#allobservable)
 3. [Changelog](https://github.com/farwayer/mobx-decorators#changelog)
 
 
