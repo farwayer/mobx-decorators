@@ -7,7 +7,7 @@ import {invokedWithArgsForClass, decorate} from './utils'
 export default function allObservable({
   only,
   except,
-}) {
+} = {}) {
   const withArgs = invokedWithArgsForClass(arguments);
 
   function decorator(target) {
