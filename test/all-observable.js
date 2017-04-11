@@ -3,20 +3,6 @@ import {allObservable, observe, setter} from '../src'
 
 
 describe('@allObservable', () => {
-  it('should make all class property observable', () => {
-    @allObservable
-    class User {
-      name = 'unknown';
-      loginCount = 0;
-    }
-
-    const user = new User();
-    isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
-  });
-
-
   it('should make all class properties observable', () => {
     @allObservable
     class User {
