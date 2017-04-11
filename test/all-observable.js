@@ -169,7 +169,7 @@ describe('@allObservable', () => {
   });
 
 
-  it('should define getter and setter for each observable property', () => {
+  it('should getter and setter for each observable property be defined', () => {
     @allObservable
     class User {
       loginCount = 0;

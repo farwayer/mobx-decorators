@@ -454,6 +454,10 @@ class User {
 
 ## Changelog
 
+### 2.2.1
+
+- `@allObservable`: fix getter and setter for observable was not defined
+
 ### 2.2.0
 
 - `@allObservable`
