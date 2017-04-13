@@ -172,4 +172,81 @@ describe('@observe', () => {
     firstCalled.should.be.true();
     secondCalled.should.be.true();
   });
+
+
+  it('should attachInitializer works with several instances', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class User {
+      @observe(() => firstCalled = true)
+      @observe(() => secondCalled = true)
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+
+    const user1 = new User();
+    user1.should.have.property('loginCount').which.is.equal(0);
+
+    user1.login();
+    user1.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+
+
+    firstCalled = false;
+    secondCalled = false;
+
+    const user2 = new User();
+    user2.should.have.property('loginCount').which.is.equal(0);
+
+    user2.login();
+    user2.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+  });
+
+
+  it('should attachInitializer works with extending', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class BaseUser {
+      @observe(() => firstCalled = true)
+      @observe(() => secondCalled = true)
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    class User extends BaseUser {}
+    class Admin extends BaseUser {}
+
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+
+
+    firstCalled = false;
+    secondCalled = false;
+
+    const admin = new Admin();
+    admin.should.have.property('loginCount').which.is.equal(0);
+
+    admin.login();
+    admin.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+  });
 });

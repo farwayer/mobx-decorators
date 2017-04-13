@@ -28,22 +28,58 @@ export function capitalize(str) {
 }
 
 export function attachInitializer(target, init) {
-  function runInit(store) {
-    // run all next initializers before our init
-    // can be recursive
-    const nextIndex = store.__mobxLazyInitializers.indexOf(runInit) + 1;
+  target.__mobxLazyInitializers = (target.__mobxLazyInitializers || []).slice();
+  target.__mobxLazyInitializers.push(collectMobxInitializersAndRunInit);
 
-    while (true) {
-      const initializer = store.__mobxLazyInitializers[nextIndex];
-      if (!initializer) break;
+  const nextIndex = target.__mobxLazyInitializers.length;
+  const currentIndex = nextIndex - 1;
 
-      initializer(store);
-      store.__mobxLazyInitializers.splice(nextIndex, 1);
+  function collectMobxInitializersAndRunInit(store) {
+    // We need to run all mobx initializers before our init().
+    // At the first function call we collect all next mobx initializers
+    // run them and our init()
+    // and replace this mobx initializers by stubs in __mobxLazyInitializers
+    // to prevent duplicate runs.
+    // On next calls (other class instances) this mobx initializers
+    // will be called by runInit().
+
+    function findNextMobxInitializers(someStore) {
+      return someStore.__mobxLazyInitializers
+        .slice(nextIndex)
+        .filter(initializer => !initializer.__mobxDecoratorsInternal);
     }
 
-    init(store);
-  }
+    function getStubReplacer(someStore) {
+      function stub() {}
+      stub.__mobxDecoratorsInternal = true;
 
-  target.__mobxLazyInitializers = (target.__mobxLazyInitializers || []).slice();
-  target.__mobxLazyInitializers.push(runInit);
+      return initializer => {
+        const i = someStore.__mobxLazyInitializers.indexOf(initializer);
+        someStore.__mobxLazyInitializers[i] = stub;
+      }
+    }
+
+    function stubAllNextMobxInitializers(someStore) {
+      const initializers = findNextMobxInitializers(someStore);
+      initializers.forEach(getStubReplacer(someStore));
+      return initializers;
+    }
+
+
+    let nextMobxInitializers = [];
+
+    function runInit(someStore) {
+      // check new mobx initializers was added after last call
+      const extraInitializers = stubAllNextMobxInitializers(someStore);
+      nextMobxInitializers = nextMobxInitializers.concat(extraInitializers);
+
+      nextMobxInitializers.forEach(initializer => initializer(someStore));
+      init(someStore);
+    }
+    runInit.__mobxDecoratorsInternal = true;
+
+    store.__mobxLazyInitializers[currentIndex] = runInit;
+    runInit(store);
+  }
+  collectMobxInitializersAndRunInit.__mobxDecoratorsInternal = true;
 }

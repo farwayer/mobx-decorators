@@ -454,6 +454,10 @@ class User {
 
 ## Changelog
 
+### 2.2.3
+
+- fix `@observe`, `@intercept` and `@save` may not work with extending
+
 ### 2.2.1
 
 - `@allObservable`: fix getter and setter for observable was not defined
