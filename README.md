@@ -454,6 +454,10 @@ class User {
 
 ## Changelog
 
+### 2.2.4
+
+- all callbacks called in store context now
+
 ### 2.2.3
 
 - fix `@observe`, `@intercept` and `@save` may not work with extending

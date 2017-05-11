@@ -24,8 +24,7 @@ export function createDecorator(storage, baseOptions = {}) {
   }
 }
 
-
-export default function save({
+function getDecorator({
   storage,
   storeName,
   transform = item => item,
@@ -37,20 +36,24 @@ export default function save({
     throw new Error("Storage must be defined");
   }
 
-  const withArgs = invokedWithArgs(arguments);
-
-  function decorator(target, property, description) {
+  return (target, property, description) => {
     const status = new PropertyStatus();
 
     return observe(async function ({newValue: value}) {
       const store = this;
       const key = storageKey(store, storeName, property);
 
+      // property was modified by user while loading
+      // loaded value will be ignored
+      if (status.get(key) === Status.Loading) {
+        status.set(key, Status.Initialized);
+      }
+
       switch (status.get(key)) {
         case Status.NotInitialized: {
           status.set(key, Status.Loading);
 
-          value = await loadValue(storage, key, transform);
+          value = await loadValue(storage, key, transform, store);
 
           // check value was loaded and property was not modified by user
           if (value !== undefined && status.get(key) === Status.Loading) {
@@ -60,12 +63,12 @@ export default function save({
               store[property] = value;
             });
 
-            onLoaded(store, property, value);
+            onLoaded.call(store, store, property, value);
           }
 
           status.set(key, Status.Initialized);
 
-          onInitialized(store, property, value);
+          onInitialized.call(store, store, property, value);
           break;
         }
 
@@ -73,36 +76,29 @@ export default function save({
           status.set(key, Status.Initialized);
           break;
 
-        // property was modified by user while loading
-        case Status.Loading: {
-          status.set(key, Status.Initialized);
-
-          const saved = await saveValue(storage, key, value);
-          if (!saved) break;
-
-          onSaved(store, property, value);
-          break;
-        }
-
         case Status.Initialized: {
           const saved = await saveValue(storage, key, value);
           if (!saved) break;
 
-          onSaved(store, property, value);
+          onSaved.call(store, store, property, value);
           break;
         }
       }
     }, true)(target, property, description);
   }
+}
 
+export default function save(options) {
+  const withArgs = invokedWithArgs(arguments);
+  const decorator = getDecorator(options);
   return decorate(withArgs, decorator, arguments);
 }
 
-async function loadValue(storage, key, transform) {
+async function loadValue(storage, key, transform, store) {
   const json = await storage.getItem(key);
   if (!json) return;
 
-  return transform(JSON.parse(json));
+  return transform.call(store, JSON.parse(json));
 }
 
 async function saveValue(storage, key, value) {

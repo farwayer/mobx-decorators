@@ -293,4 +293,51 @@ describe('@save', () => {
       user.loginCount.should.be.equal(0);
     }).should.throw();
   });
+
+
+  it('should run callbacks in store context', done => {
+    const storage = new Storage({
+      'user:name': JSON.stringify("Alice"),
+    });
+
+    function checkStore(store) {
+      if (store && store.storeName === 'user') return true;
+
+      done(new Error("this in callback is incorrect"));
+      done = null;
+      return false;
+    }
+
+    class User {
+      storeName = 'user';
+
+      @save({
+        storage,
+        transform: function(value) {
+          checkStore(this);
+          return value;
+        },
+        onLoaded: function() {
+          checkStore(this);
+          this.setName("Bob");
+        },
+        onInitialized: function() {
+          checkStore(this);
+        },
+        onSaved: function() {
+          checkStore(this);
+          if (done) done();
+        }
+      })
+      @observable
+      name = 'noname';
+
+      @action setName(name) {
+        this.name = name;
+      }
+    }
+
+    const user = new User();
+    user.name.should.be.equal("noname");
+  });
 });

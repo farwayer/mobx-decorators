@@ -92,4 +92,21 @@ describe('@setter', () => {
     const desc = Object.getOwnPropertyDescriptor(user, 'loggedIn');
     desc.configurable.should.be.true();
   });
+
+
+  it('should run transform in store context', () => {
+    class User {
+      test = 'test';
+
+      @setter(function(value) {
+        this.should.have.property('test').which.is.equal('test');
+        return value;
+      })
+      @observable
+      name;
+    }
+
+    const user = new User();
+    user.setName('Alice');
+  });
 });
