@@ -487,6 +487,7 @@ class User {
 ### 2.3.0
 
 - `@interceptReads`
+- add missed `allObservable` export to react-native
 
 ### 2.2.4
 
