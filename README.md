@@ -11,6 +11,7 @@ _Several helper MobX decorators_
   * [@toggle](https://github.com/farwayer/mobx-decorators#toggle)
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
+  * [@interceptReads](https://github.com/farwayer/mobx-decorators#interceptreads)
   * [@save](https://github.com/farwayer/mobx-decorators#save)
   * [@allObservable](https://github.com/farwayer/mobx-decorators#allobservable)
 3. [Changelog](https://github.com/farwayer/mobx-decorators#changelog)
@@ -225,6 +226,35 @@ class User {
 
 const user = new User();
 user.setLoginCount(1); // user.loginCount = 0;
+```
+
+
+### @interceptReads
+
+*@interceptRead(onRead: value =>)*  
+
+**Don't work with TypeScript yet (sorry)**
+
+`onRead` will be called *before* property reading.
+You can transform value in handler.
+
+More info can be found in
+[mobx CHANGELOG](https://github.com/mobxjs/mobx/blob/master/CHANGELOG.md#3112-unpublished-wasnt-being-bundled-correctly-by-all-bundlers)
+
+```js
+import {observable} from 'mobx'
+import {interceptReads} from 'mobx-decorators'
+```
+
+```js
+class User {
+  @interceptReads(value => value && value.toUpperCase())
+  @observable
+  name = 'Alice';
+}
+
+const user = new User();
+console.log(user.name) // ALICE
 ```
 
 
@@ -453,6 +483,10 @@ class User {
 
 
 ## Changelog
+
+### 2.3.0
+
+- `@interceptReads`
 
 ### 2.2.4
 
