@@ -231,7 +231,7 @@ user.setLoginCount(1); // user.loginCount = 0;
 
 ### @interceptReads
 
-*@interceptRead(onRead: value =>)*  
+*@interceptReads(onRead: value =>)*  
 
 **Don't work with TypeScript yet (sorry)**
 
