@@ -484,6 +484,10 @@ class User {
 
 ## Changelog
 
+### 2.3.2
+
+- fix missed files in `lib`
+
 ### 2.3.0
 
 - `@interceptReads`
