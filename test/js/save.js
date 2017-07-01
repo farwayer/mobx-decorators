@@ -1,4 +1,5 @@
 import {observable, action} from 'mobx'
+import {catchAsync} from './utils'
 import {save, createSaveDecorator} from '../../src'
 import {default as basicSave} from '../../src/decorators/save/save'
 
@@ -114,14 +115,25 @@ describe('@save', () => {
 
       @save({
         storage,
-        onSaved: async (store, property, value) => {
-          value.should.be.equal(1);
-          store.loginCount.should.be.equal(1);
+        onSaved: (store, property, value) => {
+          catchAsync(done, async () => {
+            value.should.be.equal(1);
+            store.loginCount.should.be.equal(1);
 
-          const saved = await storage.getItem('user:loginCount');
-          saved.should.be.equal(JSON.stringify(1));
-          done();
-        }
+            const saved = await storage.getItem('user:loginCount');
+            saved.should.be.equal(JSON.stringify(1));
+          });
+        },
+        onLoaded: () => {
+          done(new Error("onLoaded called"));
+        },
+        onInitialized: (store, property, value) => {
+          catchAsync(done, () => {
+            value.should.be.equal(1);
+            store.loginCount.should.be.equal(1);
+            done();
+          });
+        },
       })
       @observable
       loginCount = 0;
