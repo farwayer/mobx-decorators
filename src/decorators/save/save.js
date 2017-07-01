@@ -68,6 +68,7 @@ function getDecorator({
 
           status.set(key, Status.Initialized);
 
+          value = store[property];
           onInitialized.call(store, store, property, value);
           break;
         }
