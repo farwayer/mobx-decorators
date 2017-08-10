@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Several helper MobX decorators (setter, observe, save, ...)",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
@@ -17,7 +17,6 @@
   ],
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
-  "module": "src/index.js",
   "react-native": "src/index.react-native.js",
   "scripts": {
     "build": "babel src --out-dir lib",
