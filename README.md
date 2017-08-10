@@ -484,6 +484,10 @@ class User {
 
 ## Changelog
 
+### 2.3.3
+
+- prevent webpack to use non-transpiled source by default
+
 ### 2.3.2
 
 - fix missed files in `lib`
