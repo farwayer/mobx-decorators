@@ -1,5 +1,5 @@
 import {extras} from 'mobx'
-import {invokedWithArgs, attachInitializer} from './utils'
+import {invokedWithArgs, attachInitializer} from '../utils'
 
 
 export default function interceptReads(handler) {

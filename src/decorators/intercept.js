@@ -1,5 +1,5 @@
 import {intercept as mobxIntercept} from 'mobx'
-import {invokedWithArgs, attachInitializer} from './utils'
+import {invokedWithArgs, attachInitializer} from '../utils'
 
 
 export default function intercept(handler) {

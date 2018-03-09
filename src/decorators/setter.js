@@ -1,5 +1,5 @@
 import {action} from 'mobx'
-import {invokedWithArgs, setterName, decorate} from './utils'
+import {invokedWithArgs, setterName, decorate} from '../utils'
 
 
 function getDecorator(withArgs, name, customValue) {

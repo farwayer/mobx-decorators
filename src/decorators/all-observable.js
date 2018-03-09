@@ -1,7 +1,7 @@
 import {observable} from 'mobx'
 import difference from 'lodash.difference'
 import intersection from 'lodash.intersection'
-import {invokedWithArgsForClass, decorate} from './utils'
+import {invokedWithArgsForClass, decorate} from '../utils'
 
 
 export default function allObservable({

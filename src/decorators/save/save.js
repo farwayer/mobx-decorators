@@ -1,6 +1,6 @@
 import {runInAction} from 'mobx'
 import observe from '../observe'
-import {invokedWithArgs, decorate} from '../utils'
+import {invokedWithArgs, decorate} from '../../utils'
 
 
 const Status = {
