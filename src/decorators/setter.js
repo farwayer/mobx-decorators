@@ -1,26 +1,22 @@
 import {action} from 'mobx'
-import {invokedWithArgs, setterName, decorate} from '../utils'
+import {decorate, isPropertyDecorator} from '../decorate'
+import {setterName, isFunction, isString, isDefined} from '../utils'
 
 
-function getDecorator(withArgs, name, customValue) {
+function getDecorator(name, customValue) {
+  if (!isString(name)) {
+    customValue = name;
+    name = undefined;
+  }
+
   return (target, property, description) => {
-    if (!withArgs) {
-      name = undefined;
-      customValue = undefined;
-    }
+    const fnName = name || setterName(property);
 
-    if (typeof name !== 'string') {
-      customValue = name;
-      name = undefined;
-    }
-
-    name = name || setterName(property);
-
-    Object.defineProperty(target, name, {
+    Object.defineProperty(target, fnName, {
       @action
       value: function (value) {
-        if (customValue !== undefined) {
-          value = typeof customValue === 'function'
+        if (isDefined(customValue)) {
+          value = isFunction(customValue)
             ? customValue.call(this, value)
             : customValue;
         }
@@ -34,7 +30,10 @@ function getDecorator(withArgs, name, customValue) {
 }
 
 export default function setter(name, customValue) {
-  const withArgs = invokedWithArgs(arguments);
-  const decorator = getDecorator(withArgs, name, customValue);
-  return decorate(withArgs, decorator, arguments);
+  const withArgs = !isPropertyDecorator(arguments);
+
+  if (!withArgs) name = customValue = undefined;
+
+  const decorator = getDecorator(name, customValue);
+  return decorate(withArgs, arguments, decorator);
 }

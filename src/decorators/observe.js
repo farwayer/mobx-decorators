@@ -1,9 +1,10 @@
 import {observe as mobxObserve} from 'mobx'
-import {invokedWithArgs, attachInitializer} from '../utils'
+import {isPropertyDecorator} from '../decorate'
+import {attachInitializer} from '../utils'
 
 
 export default function observe(handler, invokeImmediately) {
-  if (!invokedWithArgs(arguments)) {
+  if (isPropertyDecorator(arguments)) {
     throw new Error("@observe must be called with handler argument");
   }
 

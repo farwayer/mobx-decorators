@@ -1,14 +1,11 @@
 import {observable} from 'mobx'
 import difference from 'lodash.difference'
 import intersection from 'lodash.intersection'
-import {invokedWithArgsForClass, decorate} from '../utils'
+import {decorate, isClassDecorator} from '../decorate'
 
 
-export default function allObservable({
-  only,
-  except,
-} = {}) {
-  const withArgs = invokedWithArgsForClass(arguments);
+export default function allObservable({only, except}={}) {
+  const withArgs = !isClassDecorator(arguments);
 
   function decorator(target) {
     return (...args) => {
@@ -30,5 +27,5 @@ export default function allObservable({
     }
   }
 
-  return decorate(withArgs, decorator, arguments);
+  return decorate(withArgs, arguments, decorator);
 }

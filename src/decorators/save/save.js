@@ -1,6 +1,6 @@
 import {runInAction} from 'mobx'
 import observe from '../observe'
-import {invokedWithArgs, decorate} from '../../utils'
+import {decorate, isPropertyDecorator} from '../../decorate'
 
 
 const Status = {
@@ -15,7 +15,7 @@ export function createDecorator(storage, baseOptions = {}) {
   baseOptions = {storage, ...baseOptions};
 
   return function (options) {
-    if (!invokedWithArgs(arguments)) {
+    if (isPropertyDecorator(arguments)) {
       return save(baseOptions)(...arguments);
     }
 
@@ -89,9 +89,9 @@ function getDecorator({
 }
 
 export default function save(options) {
-  const withArgs = invokedWithArgs(arguments);
+  const withArgs = !isPropertyDecorator(arguments);
   const decorator = getDecorator(options);
-  return decorate(withArgs, decorator, arguments);
+  return decorate(withArgs, arguments, decorator);
 }
 
 async function loadValue(storage, key, transform, store) {

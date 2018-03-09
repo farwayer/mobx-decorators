@@ -1,9 +1,10 @@
 import {extras} from 'mobx'
-import {invokedWithArgs, attachInitializer} from '../utils'
+import {isPropertyDecorator} from '../decorate'
+import {attachInitializer} from '../utils'
 
 
 export default function interceptReads(handler) {
-  if (!invokedWithArgs(arguments)) {
+  if (isPropertyDecorator(arguments)) {
     throw new Error("@interceptReads must be called with handler argument");
   }
 

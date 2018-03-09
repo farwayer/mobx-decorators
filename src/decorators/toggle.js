@@ -1,10 +1,11 @@
 import {action} from 'mobx'
-import {invokedWithArgs, setterName, decorate} from '../utils'
+import {decorate, isPropertyDecorator} from '../decorate';
+import {setterName} from '../utils'
 
 
-function getDecorator(withArgs, customName) {
+function getDecorator(name) {
   return (target, property, description) => {
-    const fnName = (withArgs && customName) || setterName(property, 'toggle');
+    const fnName = name || setterName(property, 'toggle');
 
     Object.defineProperty(target, fnName, {
       @action
@@ -17,8 +18,11 @@ function getDecorator(withArgs, customName) {
   }
 }
 
-export default function toggle(customName) {
-  const withArgs = invokedWithArgs(arguments);
-  const decorator = getDecorator(withArgs, customName);
-  return decorate(withArgs, decorator, arguments);
+export default function toggle(name) {
+  const withArgs = !isPropertyDecorator(arguments);
+
+  if (!withArgs) name = undefined;
+
+  const decorator = getDecorator(name);
+  return decorate(withArgs, arguments, decorator);
 }

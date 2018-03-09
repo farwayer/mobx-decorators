@@ -1,9 +1,10 @@
 import {intercept as mobxIntercept} from 'mobx'
-import {invokedWithArgs, attachInitializer} from '../utils'
+import {isPropertyDecorator} from '../decorate'
+import {attachInitializer} from '../utils'
 
 
 export default function intercept(handler) {
-  if (!invokedWithArgs(arguments)) {
+  if (isPropertyDecorator(arguments)) {
     throw new Error("@intercept must be called with handler argument");
   }
 

@@ -109,4 +109,28 @@ describe('@setter', () => {
     const user = new User();
     user.setName('Alice');
   });
+
+  it('should able to reuse setter', () => {
+    const upperSetter = setter(value => value.toUpperCase());
+
+    class User {
+      @upperSetter
+      @observable
+      name;
+
+      @upperSetter
+      @observable
+      surname;
+    }
+
+    const user = new User();
+    user.should.have.property('setName').which.is.a.Function();
+    user.should.have.property('setSurname').which.is.a.Function();
+
+    user.setName('Alice');
+    user.should.have.property('name').which.is.equal('ALICE');
+
+    user.setSurname('Liddell');
+    user.should.have.property('surname').which.is.equal('LIDDELL');
+  });
 });

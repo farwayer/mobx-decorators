@@ -1,23 +1,3 @@
-export function decorate(withArgs, decorator, args) {
-  return withArgs ? decorator : decorator(...args);
-}
-
-export function invokedWithArgs(args) {
-  return (
-    args.length !== 3 ||
-    typeof args[0] !== 'object' ||
-    typeof args[1] !== 'string' ||
-    typeof args[2] !== 'object'
-  )
-}
-
-export function invokedWithArgsForClass(args) {
-  return (
-    args.length !== 1 ||
-    typeof args[0] !== 'function'
-  )
-}
-
 export function setterName(name, prefix = 'set') {
   const Name = capitalize(name);
   return prefix + Name;
@@ -25,6 +5,18 @@ export function setterName(name, prefix = 'set') {
 
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function isFunction(fn) {
+  return typeof fn === 'function';
+}
+
+export function isString(str) {
+  return typeof str === 'string';
+}
+
+export function isDefined(val) {
+  return val !== undefined;
 }
 
 export function attachInitializer(target, init) {
