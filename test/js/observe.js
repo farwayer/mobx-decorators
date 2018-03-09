@@ -1,11 +1,11 @@
 import {observable, action} from 'mobx'
-import {intercept, observe} from '../src'
+import {observe} from '../../src'
 
 
-describe('@intercept', () => {
-  it('should throw if @intercept called without params', () => {
+describe('@observe', () => {
+  it('should throw if @observe called without params', () => {
     (() => class User {
-      @intercept
+      @observe
       @observable
       loggedIn = false;
     }).should.throw()
@@ -16,10 +16,7 @@ describe('@intercept', () => {
     let loginCount = -1;
 
     class User {
-      @intercept(change => {
-        loginCount = change.newValue;
-        return change;
-      })
+      @observe(change => loginCount = change.newValue)
       @observable
       loginCount = 0;
 
@@ -41,60 +38,8 @@ describe('@intercept', () => {
     let firstCalled = false, secondCalled = false;
 
     class User {
-      @intercept(change => {
-        firstCalled = true;
-        return change;
-      })
-      @intercept(change => {
-        secondCalled = true;
-        return change;
-      })
-      @observable
-      loginCount = 0;
-
-      @action login() {
-        this.loginCount += 1;
-      }
-    }
-
-    const user = new User();
-    user.should.have.property('loginCount').which.is.equal(0);
-
-    user.login();
-    user.should.have.property('loginCount').which.is.equal(1);
-    firstCalled.should.be.true();
-    secondCalled.should.be.true();
-  });
-
-
-  it('should change ignore works', () => {
-    class User {
-      @intercept(() => {})
-      @observable
-      loginCount = 0;
-
-      @action login() {
-        this.loginCount += 1;
-      }
-    }
-
-    const user = new User();
-    user.should.have.property('loginCount').which.is.equal(0);
-
-    user.login();
-    user.should.have.property('loginCount').which.is.equal(0);
-  });
-
-
-  it('should work in chain with @observe', () => {
-    let firstCalled = false, secondCalled = false;
-
-    class User {
       @observe(() => firstCalled = true)
-      @intercept(change => {
-        secondCalled = true;
-        return change;
-      })
+      @observe(() => secondCalled = true)
       @observable
       loginCount = 0;
 
@@ -112,16 +57,30 @@ describe('@intercept', () => {
     secondCalled.should.be.true();
   });
 
+
+  it('should @observe with invokeBeforeFirstAccess called while access', () => {
+    let loginCount = -1;
+
+    class User {
+      @observe(change => loginCount = change.newValue, true)
+      @observable
+      loginCount = 0;
+    }
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+    loginCount.should.be.equal(0);
+  });
 
   it('should work with extending', () => {
     class Store {
-      @intercept(change => change)
+      @observe(() => {})
       @observable
       name = "Store";
     }
 
     class User extends Store {
-      @intercept(change => change)
+      @observe(() => {})
       @observable
       loginCount = 0;
 
@@ -131,7 +90,7 @@ describe('@intercept', () => {
     }
 
     class Post extends Store {
-      @intercept(change => change)
+      @observe(() => {})
       @observable
       text = 0;
     }
@@ -143,14 +102,12 @@ describe('@intercept', () => {
     }).should.not.throw()
   });
 
-  it('should work if non-intercept property accessed before', () => {
+
+  it('should work if non-observe property accessed before', () => {
     let loginCount = -1;
 
     class User {
-      @intercept(change => {
-        loginCount = change.newValue;
-        return change;
-      })
+      @observe(change => loginCount = change.newValue)
       @observable
       loginCount = 0;
 
@@ -171,15 +128,12 @@ describe('@intercept', () => {
   });
 
 
-  it('should work if @observable defined before @intercept', () => {
+  it('should work if @observable defined before @observe', () => {
     let loginCount = -1;
 
     class User {
       @observable
-      @intercept(change => {
-        loginCount = change.newValue;
-        return change;
-      })
+      @observe(change => loginCount = change.newValue)
       loginCount = 0;
 
       @action login() {
@@ -196,16 +150,13 @@ describe('@intercept', () => {
   });
 
 
-  it('should work in chain with @observe if @observable defined before', () => {
+  it('should chain works if @observable defined before @observe', () => {
     let firstCalled = false, secondCalled = false;
 
     class User {
       @observable
       @observe(() => firstCalled = true)
-      @intercept(change => {
-        secondCalled = true;
-        return change;
-      })
+      @observe(() => secondCalled = true)
       loginCount = 0;
 
       @action login() {
@@ -218,6 +169,83 @@ describe('@intercept', () => {
 
     user.login();
     user.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+  });
+
+
+  it('should attachInitializer works with several instances', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class User {
+      @observe(() => firstCalled = true)
+      @observe(() => secondCalled = true)
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+
+    const user1 = new User();
+    user1.should.have.property('loginCount').which.is.equal(0);
+
+    user1.login();
+    user1.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+
+
+    firstCalled = false;
+    secondCalled = false;
+
+    const user2 = new User();
+    user2.should.have.property('loginCount').which.is.equal(0);
+
+    user2.login();
+    user2.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+  });
+
+
+  it('should attachInitializer works with extending', () => {
+    let firstCalled = false, secondCalled = false;
+
+    class BaseUser {
+      @observe(() => firstCalled = true)
+      @observe(() => secondCalled = true)
+      @observable
+      loginCount = 0;
+
+      @action login() {
+        this.loginCount += 1;
+      }
+    }
+
+    class User extends BaseUser {}
+    class Admin extends BaseUser {}
+
+
+    const user = new User();
+    user.should.have.property('loginCount').which.is.equal(0);
+
+    user.login();
+    user.should.have.property('loginCount').which.is.equal(1);
+    firstCalled.should.be.true();
+    secondCalled.should.be.true();
+
+
+    firstCalled = false;
+    secondCalled = false;
+
+    const admin = new Admin();
+    admin.should.have.property('loginCount').which.is.equal(0);
+
+    admin.login();
+    admin.should.have.property('loginCount').which.is.equal(1);
     firstCalled.should.be.true();
     secondCalled.should.be.true();
   });

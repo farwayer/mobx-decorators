@@ -1,6 +1,6 @@
 import {observable, action} from 'mobx'
-import {save, createSaveDecorator} from '../src'
-import {default as basicSave} from '../src/decorators/save/save'
+import {save, createSaveDecorator} from '../../src'
+import {default as basicSave} from '../../src/decorators/save/save'
 
 
 class Storage {

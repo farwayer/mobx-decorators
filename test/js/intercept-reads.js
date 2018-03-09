@@ -1,5 +1,5 @@
-import {observable, action} from 'mobx'
-import {interceptReads} from '../src'
+import {observable} from 'mobx'
+import {interceptReads} from '../../src'
 
 
 describe('@interceptReads', () => {

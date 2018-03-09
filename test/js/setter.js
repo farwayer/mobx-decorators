@@ -1,5 +1,5 @@
 import {observable} from 'mobx'
-import {setter} from '../src'
+import {setter} from '../../src'
 
 
 describe('@setter', () => {

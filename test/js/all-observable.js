@@ -1,5 +1,5 @@
 import {isObservable, observable} from 'mobx'
-import {allObservable, observe, setter} from '../src'
+import {allObservable, observe, setter} from '../../src'
 
 
 describe('@allObservable', () => {

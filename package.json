@@ -20,8 +20,8 @@
   "react-native": "src/index.react-native.js",
   "scripts": {
     "build": "babel src --out-dir lib",
-    "test": "mocha --require @babel/register --require should",
-    "cover": "istanbul cover _mocha --report lcovonly -- --require @babel/register --require should --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
+    "test": "mocha",
+    "cover": "istanbul cover _mocha --report lcovonly -- --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
     "prepack": "npm run test && npm run build"
   },
   "peerDependencies": {
