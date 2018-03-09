@@ -209,6 +209,12 @@
   dependencies:
     "@babel/plugin-syntax-decorators" "7.0.0-beta.40"
 
+"@babel/plugin-proposal-export-default-from@^7.0.0-beta.40":
+  version "7.0.0-beta.40"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-export-default-from/-/plugin-proposal-export-default-from-7.0.0-beta.40.tgz#af86537dc76cb3d31b6697480e30058a6da3c753"
+  dependencies:
+    "@babel/plugin-syntax-export-default-from" "7.0.0-beta.40"
+
 "@babel/plugin-proposal-object-rest-spread@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.0.0-beta.40.tgz#ce35d2240908e52706a612eb26d67db667cd700f"
@@ -239,6 +245,10 @@
 "@babel/plugin-syntax-decorators@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-decorators/-/plugin-syntax-decorators-7.0.0-beta.40.tgz#26700fe4599606701bf73cddedeb6f470aa0fe54"
+
+"@babel/plugin-syntax-export-default-from@7.0.0-beta.40":
+  version "7.0.0-beta.40"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-export-default-from/-/plugin-syntax-export-default-from-7.0.0-beta.40.tgz#6457a80bd22779eaf61f41b1d322d84d7e2deb65"
 
 "@babel/plugin-syntax-object-rest-spread@7.0.0-beta.40":
   version "7.0.0-beta.40"

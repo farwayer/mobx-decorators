@@ -5,6 +5,7 @@ module.exports = {
   plugins: [
     '@babel/proposal-decorators',
     ['@babel/proposal-class-properties', {loose: true}],
+    '@babel/proposal-export-default-from',
     '@babel/transform-runtime',
   ],
 };
