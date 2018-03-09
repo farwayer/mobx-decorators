@@ -1,6 +1,5 @@
 .idea/
 node_modules/
 lib/
-yarn.lock
 npm-debug.log
 yarn-error.log
