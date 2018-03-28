@@ -34,11 +34,13 @@ npm install --save-dev babel-plugin-transform-decorators-legacy
 
 ### @setter
 
-*@setter*  
-*@setter(name)*  
-*@setter(name, constValue)*  
-*@setter(transformFn: value =>)*  
-*@setter(name, transformFn: value =>)*  
+```js
+@setter
+@setter(name)
+@setter(name, constValue)
+@setter(transformFn: value =>)
+@setter(name, transformFn: value =>)
+```
 
 Create setter for `property` with `setProperty` or custom name.
 
@@ -101,8 +103,10 @@ user.setName('Alice'); // user.name = 'ALICE'
 
 ### @toggle
 
-*@toggle*  
-*@toggle(name)*
+```js
+@toggle
+@toggle(name)
+```
 
 Toggle boolean property (`property = !property`).
 
@@ -136,8 +140,10 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 
 ### @observe
 
-*@observe(onChanged: change =>)*  
-*@observe(onChanged: change =>, invokeBeforeFirstAccess)*
+```js
+@observe(onChanged: change =>)
+@observe(onChanged: change =>, invokeBeforeFirstAccess)
+```
 
 `onChanged` will be called *after* property change.
 
@@ -184,7 +190,9 @@ user2.setLoggedIn(true); // console.log(false)
 
 ### @intercept
 
-*@intercept(onWillChange: change =>)*  
+```js
+@intercept(onWillChange: change =>)
+```
 
 `onWillChange` will be called *before* property change.
 You can replace value or cancel change in handler.
@@ -227,9 +235,11 @@ user.setLoginCount(1); // user.loginCount = 0;
 
 ### @_interceptReads
 
-*@_interceptReads(onRead: value =>)*  
+```js
+@_interceptReads(onRead: value =>)
+```
 
-**interceptReads renamed in mobx and look like will be deprecated**
+**interceptReads renamed in Mobx4 and look like will be deprecated**
 
 `onRead` will be called *before* property reading.
 You can transform value in handler.
@@ -256,19 +266,21 @@ console.log(user.name) // ALICE
 
 ### @save
 
-*@save*  
-*@save({  
-&nbsp;&nbsp;storage = defaultStorage(),  
-&nbsp;&nbsp;storeName = store => store.storeName,
-&nbsp;&nbsp;serializer = {
-&nbsp;&nbsp;&nbsp;&nbsp;save: value => JSON.stringify(value),
-&nbsp;&nbsp;&nbsp;&nbsp;load: data => JSON.parse(data),
-&nbsp;&nbsp;},  
-&nbsp;&nbsp;onLoaded = (store, property, value) => {},  
-&nbsp;&nbsp;onSaved = (store, property, value) => {},  
-&nbsp;&nbsp;onInitialized = (store, property, value) => {},  
-})*  
-*createSaveDecorator(baseOptions={})*
+```js
+@save
+@save({
+  storage = defaultStorage(),
+  storeName = store => store.storeName,
+  serializer = {
+    save: value => JSON.stringify(value),
+    load: data => JSON.parse(data),
+  },
+  onLoaded = (store, property, value) => {},
+  onSaved = (store, property, value) => {},
+  onInitialized = (store, property, value) => {},
+})
+createSaveDecorator(baseOptions={})
+```
 
 **(!) TypeScript: you can't use class property initializers (`class F {prop = 1}`) with @save decorator**
 
@@ -442,11 +454,13 @@ console.log(user.loginCount);
 
 ### @allObservable
 
-*@allObservable*  
-*@allObservable({  
-&nbsp;&nbsp;only,  
-&nbsp;&nbsp;except = [],  
-})*  
+```js
+@allObservable
+@allObservable({
+  only,
+  except = [],
+})
+```
 
 Class decorator that makes all properties observable. Use `only` for
 whitelisting properties and `except` for blacklisting.  
