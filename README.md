@@ -11,7 +11,7 @@ _Several helper MobX decorators_
   * [@toggle](https://github.com/farwayer/mobx-decorators#toggle)
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
-  * [@_interceptReads](https://github.com/farwayer/mobx-decorators#interceptreads)
+  * [@_interceptReads](https://github.com/farwayer/mobx-decorators#_interceptreads)
   * [@save](https://github.com/farwayer/mobx-decorators#save)
   * [@allObservable](https://github.com/farwayer/mobx-decorators#allobservable)
 3. [Changelog](https://github.com/farwayer/mobx-decorators#changelog)
