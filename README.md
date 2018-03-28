@@ -498,6 +498,7 @@ class User {
 
 ### 4.0.0
 
+- MobX4
 - major version is the same as MobX
 - TypeScript support. Yippee!
 - `@interceptReads` renamed to `@_interceptReads` (as in MobX4)

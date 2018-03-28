@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Several helper MobX decorators (setter, observe, save, ...)",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
@@ -26,7 +26,7 @@
     "prepack": "npm run test && npm run build"
   },
   "peerDependencies": {
-    "mobx": "^4.0.0"
+    "mobx": "^4.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.42",
@@ -38,11 +38,11 @@
     "@babel/preset-env": "^7.0.0-beta.42",
     "@babel/register": "^7.0.0-beta.42",
     "@types/mocha": "^5.0.0",
-    "@types/node": "^9.6.0",
+    "@types/node": "^9.6.1",
     "@types/should": "^13.0.0",
     "coveralls": "^3.0.0",
     "istanbul": "1.1.0-alpha.1",
-    "mobx": "^4.1.0",
+    "mobx": "^4.1.1",
     "mocha": "^5.0.5",
     "should": "^13.2.1",
     "ts-node": "^5.0.1",
