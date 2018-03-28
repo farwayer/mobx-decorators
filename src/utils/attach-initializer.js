@@ -7,7 +7,7 @@ export default function attachInitializer(target, property, init) {
     if (type !== 'add') return;
     if (property && key !== property) return;
 
-    setTimeout(stopSpy); // https://github.com/mobxjs/mobx/issues/1459
+    stopSpy();
     init(store, property);
   })
 }
