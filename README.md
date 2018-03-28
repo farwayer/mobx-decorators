@@ -26,7 +26,7 @@ npm install --save mobx-decorators
 You also should use some transpiler (like babel).
 
 ```bash
-npm install --save-dev babel-plugin-transform-decorators-legacy
+npm install --save-dev @babel/plugin-proposal-decorators
 ```
 
 
