@@ -93,7 +93,6 @@ describe('@setter', () => {
     desc.configurable.should.be.true();
   });
 
-
   it('should run transform in store context', () => {
     class User {
       test = 'test';
@@ -109,6 +108,7 @@ describe('@setter', () => {
     const user = new User();
     user.setName('Alice');
   });
+
 
   it('should able to reuse setter', () => {
     const upperSetter = setter(value => value.toUpperCase());
@@ -133,4 +133,18 @@ describe('@setter', () => {
     user.setSurname('Liddell');
     user.should.have.property('surname').which.is.equal('LIDDELL');
   });
+
+
+  it('setter should be bounded', () => {
+    class User {
+      @setter('login', true)
+      @observable
+      loggedIn = false;
+    }
+
+    const user = new User();
+    const {login} = user;
+    login();
+    user.should.have.property('loggedIn').which.is.true();
+  })
 });

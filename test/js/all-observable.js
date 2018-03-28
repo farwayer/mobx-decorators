@@ -1,4 +1,4 @@
-import {isObservable, observable} from 'mobx'
+import {isObservable, isObservableProp, observable} from 'mobx'
 import {allObservable, observe, setter} from '../../src'
 
 
@@ -12,8 +12,8 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
   });
 
 
@@ -30,8 +30,8 @@ describe('@allObservable', () => {
 
     const user = new User(1);
     isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
     user.should.have.property('loginCount').which.is.equal(1);
   });
 
@@ -45,8 +45,8 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.false();
+    isObservableProp(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.false();
   });
 
 
@@ -59,8 +59,8 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.false();
+    isObservableProp(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.false();
   });
 
 
@@ -77,9 +77,9 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'name').should.be.true();
-    isObservable(user, 'loginCount').should.be.false();
-    isObservable(user, 'age').should.be.false();
+    isObservableProp(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.false();
+    isObservableProp(user, 'age').should.be.false();
   });
 
 
@@ -95,8 +95,8 @@ describe('@allObservable', () => {
     const user = new User();
     user.should.have.property('loginCount').which.is.equal(0);
     isObservable(user).should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
-    isObservable(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'name').should.be.true();
   });
 
 
@@ -110,7 +110,7 @@ describe('@allObservable', () => {
     const user = new User();
     user.should.have.property('loginCount').which.is.equal(0);
     isObservable(user).should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
 
     user.setLoginCount(1);
     user.should.have.property('loginCount').which.is.equal(1);
@@ -128,7 +128,7 @@ describe('@allObservable', () => {
     const user = new User();
     user.should.have.property('loginCount').which.is.equal(0);
     isObservable(user).should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
 
     user.setLoginCount(1);
     user.should.have.property('loginCount').which.is.equal(1);
@@ -147,8 +147,8 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
-    isObservable(user, 'name').should.be.false();
+    isObservableProp(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'name').should.be.false();
   });
 
 
@@ -164,8 +164,8 @@ describe('@allObservable', () => {
 
     const user = new User();
     isObservable(user).should.be.true();
-    isObservable(user, 'loginCount').should.be.true();
-    isObservable(user, 'name').should.be.true();
+    isObservableProp(user, 'loginCount').should.be.true();
+    isObservableProp(user, 'name').should.be.true();
   });
 
 

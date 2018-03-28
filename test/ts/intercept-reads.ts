@@ -3,15 +3,6 @@ import {_interceptReads} from '../../src'
 
 
 describe('@interceptReads', () => {
-  it('should throw if @interceptReads called without params', () => {
-    (() => class User {
-      @_interceptReads
-      @observable
-      loggedIn = false;
-    }).should.throw()
-  });
-
-
   it('should handler be called', () => {
     let loginCount = -1;
 

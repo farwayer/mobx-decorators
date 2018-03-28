@@ -1,6 +1,5 @@
 import {observable, action} from 'mobx'
-import {catchAsync} from './utils'
-import {save, createSaveDecorator} from '../../src'
+import save, {createSaveDecorator} from '../../src/decorators/save'
 import {default as basicSave} from '../../src/decorators/save/save'
 
 
@@ -38,11 +37,11 @@ describe('@save', () => {
         }
       })
       @observable
-      loginCount = 0;
+      loginCount;
     }
 
     const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.loginCount;
   });
 
 
@@ -56,9 +55,8 @@ describe('@save', () => {
         storage,
         onInitialized: store => {
           store.login();
-          store.loginCount.should.be.equal(1);
         },
-        onSaved: async (store, property, value) => {
+        onSaved: async function(store, property, value) {
           value.should.be.equal(1);
           store.loginCount.should.be.equal(1);
           const saved = await storage.getItem('user:loginCount');
@@ -67,15 +65,40 @@ describe('@save', () => {
         }
       })
       @observable
-      loginCount = 0;
+      loginCount;
 
       @action login() {
-        this.loginCount += 1;
+        this.loginCount = (this.loginCount || 0) + 1;
       }
     }
 
     const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.loginCount
+  });
+
+
+  it('should work if storeName defined after observable', done => {
+    const storage = new Storage({
+      'user:loginCount': JSON.stringify(999),
+    });
+
+    class User {
+      storeName = 'user';
+
+      @save({
+        storage,
+        onLoaded: (store, property, value) => {
+          value.should.be.equal(999);
+          store.loginCount.should.be.equal(999);
+          done();
+        }
+      })
+      @observable
+      loginCount;
+    }
+
+    const user = new User();
+    user.loginCount
   });
 
 
@@ -97,11 +120,11 @@ describe('@save', () => {
         }
       })
       @observable
-      loginCount = 0;
+      loginCount;
     }
 
     const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.loginCount
   });
 
 
@@ -115,70 +138,28 @@ describe('@save', () => {
 
       @save({
         storage,
-        onSaved: (store, property, value) => {
-          catchAsync(done, async () => {
-            value.should.be.equal(1);
-            store.loginCount.should.be.equal(1);
+        onSaved: async function(store, property, value) {
+          value.should.be.equal(1);
+          store.loginCount.should.be.equal(1);
 
-            const saved = await storage.getItem('user:loginCount');
-            saved.should.be.equal(JSON.stringify(1));
-          });
-        },
-        onLoaded: () => {
-          done(new Error("onLoaded called"));
-        },
-        onInitialized: (store, property, value) => {
-          catchAsync(done, () => {
-            value.should.be.equal(1);
-            store.loginCount.should.be.equal(1);
-            done();
-          });
-        },
-      })
-      @observable
-      loginCount = 0;
-
-      @action login() {
-        this.loginCount += 1;
-      }
-    }
-
-    const user = new User();
-    user.loginCount.should.be.equal(0);
-    user.login();
-    user.loginCount.should.be.equal(1);
-  });
-
-
-  it('should serializer load works', done => {
-    const storage = new Storage({
-      'user:lastLogin': 'XXX' + JSON.stringify(new Date(2013, 6, 17)),
-    });
-
-    class User {
-      storeName = 'user';
-
-      @save({
-        storage,
-        serializer: {
-          load: data => new Date(JSON.parse(data.slice(3))),
-          save: value => 'XXX' + JSON.stringify(value),
-        },
-        onLoaded: (store, property, value) => {
-          value.should.be.Date();
-          value.should.be.eql(new Date(2013, 6, 17));
-          store.lastLogin.should.be.Date();
-          store.lastLogin.should.be.eql(new Date(2013, 6, 17));
+          const saved = await storage.getItem('user:loginCount');
+          saved.should.be.equal(JSON.stringify(1));
           done();
         }
       })
       @observable
-      lastLogin = new Date(2017, 3, 15);
+      loginCount;
+
+      @action login() {
+        this.loginCount = (this.loginCount || 0) + 1;
+      }
     }
 
     const user = new User();
-    user.lastLogin.should.be.eql(new Date(2017, 3, 15));
+    user.login();
+    user.loginCount.should.be.equal(1);
   });
+
 
   it('should serializer works', done => {
     const storage = new Storage({
@@ -208,11 +189,11 @@ describe('@save', () => {
         },
       })
       @observable
-      lastLogin = new Date(2017, 3, 15);
+      lastLogin;
     }
 
     const user = new User();
-    user.lastLogin.should.be.eql(new Date(2017, 3, 15));
+    user.lastLogin
   });
 
 
@@ -230,10 +211,10 @@ describe('@save', () => {
         onInitialized: () => done(),
       })
       @observable
-      loginCount = 0;
+      loginCount;
 
       @action login() {
-        this.loginCount = 1;
+        this.loginCount = (this.loginCount || 0) + 1;
       }
     }
 
@@ -252,7 +233,7 @@ describe('@save', () => {
     class BaseUser {
       @save({storage})
       @observable
-      loginCount = 0;
+      loginCount;
     }
 
     class User extends BaseUser {
@@ -264,8 +245,8 @@ describe('@save', () => {
 
     const user = new User();
     const admin = new Admin();
-    user.loginCount.should.be.equal(0);
-    admin.loginCount.should.be.equal(0);
+    user.loginCount
+    admin.loginCount
 
     setTimeout(() => {
       user.loginCount.should.be.equal(999);
@@ -293,11 +274,11 @@ describe('@save', () => {
     class User {
       @save
       @observable
-      loginCount = 0;
+      loginCount;
     }
 
     const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.loginCount
   });
 
 
@@ -321,11 +302,11 @@ describe('@save', () => {
         }
       })
       @observable
-      loginCount = 0;
+      loginCount;
     }
 
     const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.loginCount
   });
 
 
@@ -336,11 +317,10 @@ describe('@save', () => {
 
         @basicSave()
         @observable
-        loginCount = 0;
+        loginCount;
       }
 
       const user = new User();
-      user.loginCount.should.be.equal(0);
     }).should.throw();
   });
 
@@ -380,7 +360,7 @@ describe('@save', () => {
         }
       })
       @observable
-      name = 'noname';
+      name;
 
       @action setName(name) {
         this.name = name;
@@ -388,29 +368,6 @@ describe('@save', () => {
     }
 
     const user = new User();
-    user.name.should.be.equal("noname");
-  });
-
-  it('should work with storeName as function', done => {
-    const storage = new Storage({
-      'user:loginCount': JSON.stringify(999),
-    });
-
-    class User {
-      @save({
-        storage,
-        storeName: store => store.constructor.name.toLowerCase(),
-        onLoaded: (store, property, value) => {
-          value.should.be.equal(999);
-          store.loginCount.should.be.equal(999);
-          done();
-        }
-      })
-      @observable
-      loginCount = 0;
-    }
-
-    const user = new User();
-    user.loginCount.should.be.equal(0);
+    user.name
   });
 });

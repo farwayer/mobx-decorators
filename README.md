@@ -1,4 +1,4 @@
-# MobX decorators
+﻿# MobX decorators
 
 _Several helper MobX decorators_
 
@@ -11,7 +11,7 @@ _Several helper MobX decorators_
   * [@toggle](https://github.com/farwayer/mobx-decorators#toggle)
   * [@observe](https://github.com/farwayer/mobx-decorators#observe)
   * [@intercept](https://github.com/farwayer/mobx-decorators#intercept)
-  * [@interceptReads](https://github.com/farwayer/mobx-decorators#interceptreads)
+  * [@_interceptReads](https://github.com/farwayer/mobx-decorators#interceptreads)
   * [@save](https://github.com/farwayer/mobx-decorators#save)
   * [@allObservable](https://github.com/farwayer/mobx-decorators#allobservable)
 3. [Changelog](https://github.com/farwayer/mobx-decorators#changelog)
@@ -139,8 +139,6 @@ user.swapLoggedIn(); // user.loggedIn = !user.loggedIn
 *@observe(onChanged: change =>)*  
 *@observe(onChanged: change =>, invokeBeforeFirstAccess)*
 
-**Don't work with TypeScript yet (sorry)**
-
 `onChanged` will be called *after* property change.
 
 If `invokeBeforeFirstAccess` is `true` handler will be called one time before
@@ -188,8 +186,6 @@ user2.setLoggedIn(true); // console.log(false)
 
 *@intercept(onWillChange: change =>)*  
 
-**Don't work with TypeScript yet (sorry)**
-
 `onWillChange` will be called *before* property change.
 You can replace value or cancel change in handler.
 
@@ -229,11 +225,11 @@ user.setLoginCount(1); // user.loginCount = 0;
 ```
 
 
-### @interceptReads
+### @_interceptReads
 
-*@interceptReads(onRead: value =>)*  
+*@_interceptReads(onRead: value =>)*  
 
-**Don't work with TypeScript yet (sorry)**
+**interceptReads renamed in mobx and look like will be deprecated**
 
 `onRead` will be called *before* property reading.
 You can transform value in handler.
@@ -263,15 +259,18 @@ console.log(user.name) // ALICE
 *@save*  
 *@save({  
 &nbsp;&nbsp;storage = defaultStorage(),  
-&nbsp;&nbsp;storeName = store.storeName,  
-&nbsp;&nbsp;transform = item => item,  
+&nbsp;&nbsp;storeName = store => store.storeName,
+&nbsp;&nbsp;serializer = {
+&nbsp;&nbsp;&nbsp;&nbsp;save: value => JSON.stringify(value),
+&nbsp;&nbsp;&nbsp;&nbsp;load: data => JSON.parse(data),
+&nbsp;&nbsp;},  
 &nbsp;&nbsp;onLoaded = (store, property, value) => {},  
 &nbsp;&nbsp;onSaved = (store, property, value) => {},  
 &nbsp;&nbsp;onInitialized = (store, property, value) => {},  
 })*  
 *createSaveDecorator(baseOptions={})*
 
-**Don't work with TypeScript yet (sorry)**
+**(!) TypeScript: you can't use class property initializers (`class F {prop = 1}`) with @save decorator**
 
 `@save` decorator helps save and load observable value to/from permanent
 storage. Keep in mind `@save` is *lazy* decorator and loading will be started
@@ -282,17 +281,17 @@ loading than restored value will be ignored.
 `onSave` will be called after saving.  
 `onInitialized` will be called after loading attempt independent of the result.
 
-Because values saved as `json` in some cases (`Date` for example) you should
-provide `transform` function (see example with date).
+By default values saved as `json`. In some cases (`Date` for example) you should
+provide `serializer` (see example with date).
 
 You must define `storeName` property in store (see examples) or pass it as
-option.
+option. `storeName` option can be string or function.
 
 Default storage is `localStorage` for browser, `AsyncStorage`
 for React Native and memory for other platforms. You can specify you own
 ([localForage](https://github.com/localForage/localForage) for example)
 by `storage` option. Storage must realize simple interface
-(functions are async or must return Promise):
+(functions are async or return Promise):
 
 ```js
 const MyStorage = {
@@ -319,13 +318,13 @@ class User {
 
   @save
   @observable
-  loginCount = 0;
+  loginCount;
 }
 
 const user = new User();
-console.log(user.loginCount); // 0
+console.log(user.loginCount); // undefined
 // @save will try to load loginCount from storage but
-// loading is async (!) so value is still 0 here
+// loading is async (!) so value is still undefined here
 ```
 
 ```js
@@ -348,16 +347,15 @@ class User {
   })
   @setter
   @observable
-  loginCount = 0;
+  loginCount;
 }
 
 const user = new User();
-console.log(user.loginCount); // 0
+console.log(user.loginCount); // undefined, loading loginCount
 
-// after some time
+// throw some time
 console.log(user.loginCount); // 999
 
-// after some time
 user.setLoginCount(1000); // 1000 will be saved to storage
 ```
 
@@ -367,18 +365,18 @@ class User {
     storeName: 'user',
   })
   @observable
-  loginCount = 0;
+  loginCount;
   
   @save({
     storeName: 'group',
   })
   @observable
-  group = 'noname';
+  group;
 }
 
 const user = new User();
-console.log(user.loginCount); // 0
-console.log(user.group); // 'noname'
+console.log(user.loginCount); // undefined, loading loginCount
+console.log(user.group); // undefined, loading group
 ```
 
 ```js
@@ -386,13 +384,13 @@ class User {
   storeName = 'user';
 
   @save({
-    transform: value => {
-      console.log(value); // "2017-03-15T19:20:24.638Z"
-      return new Date(value)
+    serializer: {
+      load: data => new Date(fromBSON(data)),
+      save: value => toBSON(value),
     },
   })
   @observable
-  lastLogin = new Date(2000, 1, 1);
+  lastLogin;
 }
 
 const user = new User();
@@ -400,19 +398,19 @@ console.log(user.lastLogin);
 ```
 
 ```js
-const save = createSaveDecorator({
+const mysave = createSaveDecorator({
   storage: MyOwnStorage,
-  storeName: 'user',
+  storeName: store => store.constructor.name,
 });
 
 class User {
-  @save
+  @mysave
   @observable
-  loginCount = 0;
+  loginCount;
   
   @save
   @observable
-  name = 'noname';
+  name;
 }
 
 const user = new User();
@@ -420,21 +418,21 @@ console.log(user.loginCount);
 ```
 
 ```js
-const save = createSaveDecorator({
+const mysave = createSaveDecorator({
   storage: MyOwnStorage,
   storeName: 'user',
 });
 
 class User {
-  @save({
+  @mysave({
     onInitialized: () => console.log('initialized')
   })
   @observable
-  loginCount = 0;
+  loginCount;
   
   @save
   @observable
-  name = 'noname';
+  name;
 }
 
 const user = new User();
@@ -483,6 +481,16 @@ class User {
 
 
 ## Changelog
+
+### 4.0.0
+
+- major version is the same as MobX
+- TypeScript support. Yippee!
+- `@interceptReads` renamed to `@_interceptReads` (as in MobX4)
+- `@setter` and `@toggle` auto bound to store
+- `@save`: `transform` replaced with `serializer`
+- `@save`: `storeName` option can be function
+- all internal mobx kitchen depends removed
 
 ### 2.3.3
 

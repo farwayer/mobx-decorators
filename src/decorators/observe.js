@@ -1,6 +1,5 @@
 import {observe as mobxObserve} from 'mobx'
-import {isPropertyDecorator} from '../decorate'
-import {attachInitializer} from '../utils'
+import {attachInitializer, isPropertyDecorator} from '../utils'
 
 
 export default function observe(handler, invokeImmediately) {
@@ -9,10 +8,10 @@ export default function observe(handler, invokeImmediately) {
   }
 
   return (target, property, description) => {
-    attachInitializer(target, store => {
+    attachInitializer(target, property, store => {
       mobxObserve(store, property, handler.bind(store), invokeImmediately);
     });
 
-    return {...description, configurable: true};
+    return description && {...description, configurable: true};
   }
 }

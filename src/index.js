@@ -1,7 +1,7 @@
 export setter from './decorators/setter'
 export toggle from './decorators/toggle'
 export intercept from './decorators/intercept'
-export interceptReads from './decorators/intercept-reads'
+export _interceptReads from './decorators/intercept-reads'
 export observe from './decorators/observe'
 export allObservable from './decorators/all-observable'
 export save, {createSaveDecorator} from './decorators/save'

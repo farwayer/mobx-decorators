@@ -1,6 +1,6 @@
 import {runInAction} from 'mobx'
 import observe from '../observe'
-import {decorate, isPropertyDecorator} from '../../decorate'
+import {decorate, isPropertyDecorator, isDefined} from '../../utils'
 
 
 const Status = {
@@ -26,8 +26,11 @@ export function createDecorator(storage, baseOptions = {}) {
 
 function getDecorator({
   storage,
-  storeName,
-  transform = item => item,
+  storeName = store => store.storeName,
+  serializer: {
+    load: serializerLoad = data => JSON.parse(data),
+    save: serializerSave = value => JSON.stringify(value),
+  } = {},
   onLoaded = () => {},
   onSaved = () => {},
   onInitialized = () => {},
@@ -43,7 +46,7 @@ function getDecorator({
       const store = this;
       const key = storageKey(store, storeName, property);
 
-      // property was modified by user while loading
+      // if property was modified by user while loading
       // loaded value will be ignored
       if (status.get(key) === Status.Loading) {
         status.set(key, Status.Initialized);
@@ -53,13 +56,15 @@ function getDecorator({
         case Status.NotInitialized: {
           status.set(key, Status.Loading);
 
-          value = await loadValue(storage, key, transform, store);
+          const data = await storage.getItem(key);
 
           // check value was loaded and property was not modified by user
-          if (value !== undefined && status.get(key) === Status.Loading) {
+          if (isDefined(data) && status.get(key) === Status.Loading) {
             status.set(key, Status.SettingLoadedValue);
 
-            runInAction(`loading ${key} from storage`, () => {
+            value = serializerLoad.call(store, data);
+
+            runInAction(`set ${key} loaded from storage`, () => {
               store[property] = value;
             });
 
@@ -73,13 +78,16 @@ function getDecorator({
           break;
         }
 
-        case Status.SettingLoadedValue:
+        case Status.SettingLoadedValue: {
           status.set(key, Status.Initialized);
           break;
+        }
 
         case Status.Initialized: {
-          const saved = await saveValue(storage, key, value);
-          if (!saved) break;
+          const data = serializerSave.call(store, value);
+          if (!data) break;
+
+          await storage.setItem(key, data);
 
           onSaved.call(store, store, property, value);
           break;
@@ -95,22 +103,11 @@ export default function save(options) {
   return decorate(withArgs, arguments, decorator);
 }
 
-async function loadValue(storage, key, transform, store) {
-  const json = await storage.getItem(key);
-  if (!json) return;
+function storageKey(store, storeName, property) {
+  if (typeof storeName === 'function') {
+    storeName = storeName.call(store, store);
+  }
 
-  return transform.call(store, JSON.parse(json));
-}
-
-async function saveValue(storage, key, value) {
-  const json = JSON.stringify(value);
-  if (!json) return;
-
-  await storage.setItem(key, json);
-  return true;
-}
-
-function storageKey(store, storeName=store.storeName, property) {
   if (!storeName) {
     throw new Error(
       "`storeName` must be defined as property in store or passed as option " +

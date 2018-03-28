@@ -46,4 +46,18 @@ describe('@toggle', () => {
     const desc = Object.getOwnPropertyDescriptor(user, 'loggedIn');
     desc.configurable.should.be.true();
   });
+
+
+  it('toggle should be bounded', () => {
+    class User {
+      @toggle
+      @observable
+      loggedIn = false;
+    }
+
+    const user = new User();
+    const {toggleLoggedIn} = user;
+    toggleLoggedIn();
+    user.should.have.property('loggedIn').which.is.true();
+  });
 });

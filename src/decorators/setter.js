@@ -1,6 +1,8 @@
 import {action} from 'mobx'
-import {decorate, isPropertyDecorator} from '../decorate'
-import {setterName, isFunction, isString, isDefined} from '../utils'
+import {
+  decorate, isPropertyDecorator,
+  setterName, isFunction, isString, isDefined,
+} from '../utils'
 
 
 function getDecorator(name, customValue) {
@@ -12,8 +14,7 @@ function getDecorator(name, customValue) {
   return (target, property, description) => {
     const fnName = name || setterName(property);
 
-    Object.defineProperty(target, fnName, {
-      @action
+    const fnDesc = action.bound(target, fnName, {
       value: function (value) {
         if (isDefined(customValue)) {
           value = isFunction(customValue)
@@ -24,14 +25,14 @@ function getDecorator(name, customValue) {
         this[property] = value;
       }
     });
+    Object.defineProperty(target, fnName, fnDesc);
 
-    return {...description, configurable: true};
+    return description && {...description, configurable: true};
   }
 }
 
 export default function setter(name, customValue) {
   const withArgs = !isPropertyDecorator(arguments);
-
   if (!withArgs) name = customValue = undefined;
 
   const decorator = getDecorator(name, customValue);

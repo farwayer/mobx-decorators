@@ -1,6 +1,5 @@
 import {intercept as mobxIntercept} from 'mobx'
-import {isPropertyDecorator} from '../decorate'
-import {attachInitializer} from '../utils'
+import {attachInitializer, isPropertyDecorator} from '../utils'
 
 
 export default function intercept(handler) {
@@ -9,10 +8,10 @@ export default function intercept(handler) {
   }
 
   return (target, property, description) => {
-    attachInitializer(target, store => {
+    attachInitializer(target, property, store => {
       mobxIntercept(store, property, handler.bind(store));
     });
 
-    return {...description, configurable: true};
+    return description && {...description, configurable: true};
   }
 }

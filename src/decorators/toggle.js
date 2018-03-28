@@ -1,26 +1,24 @@
 import {action} from 'mobx'
-import {decorate, isPropertyDecorator} from '../decorate';
-import {setterName} from '../utils'
+import {decorate, isPropertyDecorator, setterName} from '../utils'
 
 
 function getDecorator(name) {
   return (target, property, description) => {
     const fnName = name || setterName(property, 'toggle');
 
-    Object.defineProperty(target, fnName, {
-      @action
+    const fnDesc = action.bound(target, fnName, {
       value: function () {
         this[property] = !this[property];
       }
     });
+    Object.defineProperty(target, fnName, fnDesc);
 
-    return {...description, configurable: true};
+    return description && {...description, configurable: true};
   }
 }
 
 export default function toggle(name) {
   const withArgs = !isPropertyDecorator(arguments);
-
   if (!withArgs) name = undefined;
 
   const decorator = getDecorator(name);

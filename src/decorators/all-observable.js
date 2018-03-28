@@ -1,7 +1,7 @@
 import {observable} from 'mobx'
 import difference from 'lodash.difference'
 import intersection from 'lodash.intersection'
-import {decorate, isClassDecorator} from '../decorate'
+import {decorate, isClassDecorator} from '../utils'
 
 
 export default function allObservable({only, except}={}) {
