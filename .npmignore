@@ -1,4 +1,5 @@
 .idea/
+src/
 test/
 .babelrc.js
 .babelrc.esm.js
