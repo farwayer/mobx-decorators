@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Several helper MobX decorators (setter, observe, save, ...)",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
@@ -15,15 +15,18 @@
     "observe",
     "save"
   ],
-  "main": "lib/index.js",
-  "jsnext:main": "src/index.js",
-  "module": "src/index.js",
-  "react-native": "src/index.react-native.js",
+  "main": "lib",
+  "jsnext:main": "esm",
+  "module": "esm",
+  "react-native": "esm/index.react-native.js",
   "scripts": {
-    "build": "rm -rf lib && babel src --out-dir lib",
+    "build": "yarn clean && yarn build-lib && yarn build-esm",
+    "build-lib": "babel src --out-dir lib",
+    "build-esm": "babel src --out-dir esm --config-file=./.babelrc.esm.js",
+    "clean": "rm -rf lib esm",
     "test": "mocha",
     "cover": "istanbul cover _mocha --report lcovonly -- --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
-    "prepack": "npm run test && npm run build"
+    "prepack": "yarn build && yarn test"
   },
   "peerDependencies": {
     "mobx": "^4.1.1"

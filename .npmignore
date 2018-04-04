@@ -1,6 +1,8 @@
 .idea/
 test/
-.babelrc
+.babelrc.js
+.babelrc.esm.js
 yarn.lock
 .npmignore
 .travis.yml
+yarn-error.log

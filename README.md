@@ -496,6 +496,10 @@ class User {
 
 ## Changelog
 
+### 4.1.0
+
+- separate esm build
+
 ### 4.0.0
 
 - MobX4
