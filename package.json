@@ -21,8 +21,8 @@
   "react-native": "esm",
   "scripts": {
     "build": "yarn clean && yarn build-lib && yarn build-esm",
-    "build-lib": "babel src --out-dir lib --config-file=./.babel.lib.js",
-    "build-esm": "babel src --out-dir esm --config-file=./.babel.esm.js",
+    "build-lib": "babel src --out-dir lib",
+    "build-esm": "ESM=1 babel src --out-dir esm",
     "clean": "rm -rf lib esm",
     "test": "mocha",
     "cover": "istanbul cover _mocha --report lcovonly -- --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
