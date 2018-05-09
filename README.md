@@ -56,9 +56,7 @@ import {setter} from 'mobx-decorators'
 
 ```js
 class User {
-  @setter
-  @observable
-  loggedIn = false;
+  @setter @observable loggedIn = false;
 }
 
 const user = new User();
@@ -68,8 +66,7 @@ user.setLoggedIn(true); // user.loggedIn = true
 ```js
 class User {
   @setter('updateLoggedIn')
-  @observable
-  loggedIn = false;
+  @observable loggedIn = false;
 }
 
 const user = new User();
@@ -80,8 +77,7 @@ user.updateLoggedIn(true); // user.loggedIn = true
 class User {
   @setter('login', true)
   @setter('logout', false)
-  @observable
-  loggedIn = false;
+  @observable loggedIn = false;
 }
 
 const user = new User();
@@ -92,8 +88,7 @@ user.logout(); // user.loggedIn = false
 ```js
 class User {
   @setter(value => value && value.toUpperCase())
-  @observable
-  name;
+  @observable name;
 }
 
 const user = new User();
@@ -117,9 +112,7 @@ import {toggle} from 'mobx-decorators'
 
 ```js
 class User {
-  @toggle
-  @observable
-  loggedIn = false;
+  @toggle @observable loggedIn = false;
 }
 
 const user = new User();
@@ -129,8 +122,7 @@ user.toggleLoggedIn(); // user.loggedIn = !user.loggedIn
 ```js
 class User {
   @toggle('swapLoggedIn')
-  @observable
-  loggedIn = false;
+  @observable loggedIn = false;
 }
 
 const user = new User();
@@ -161,9 +153,7 @@ import {observe} from 'mobx-decorators'
 ```js
 class User {
   @observe(change => console.log(change.newValue))
-  @setter
-  @observable
-  loggedIn = false;
+  @setter @observable loggedIn = false;
 }
 
 const user = new User();
@@ -173,9 +163,7 @@ user.setLoggedIn(true); // console.log(true)
 ```js
 class User {
   @observe(change => console.log(change.newValue), true)
-  @setter
-  @observable
-  loggedIn = false;
+  @setter @observable loggedIn = false;
 }
 
 const user1 = new User();
@@ -211,9 +199,7 @@ class User {
     change.newValue = 999;
     return change;
   })
-  @setter
-  @observable
-  loginCount = 0;
+  @setter @observable loginCount = 0;
 }
 
 const user = new User();
@@ -223,9 +209,7 @@ user.setLoginCount(1); // user.loginCount = 999;
 ```js
 class User {
   @intercept(change => null)
-  @setter
-  @observable
-  loginCount = 0;
+  @setter @observable loginCount = 0;
 }
 
 const user = new User();
@@ -249,14 +233,13 @@ More info can be found in
 
 ```js
 import {observable} from 'mobx'
-import {interceptReads} from 'mobx-decorators'
+import {_interceptReads} from 'mobx-decorators'
 ```
 
 ```js
 class User {
-  @interceptReads(value => value && value.toUpperCase())
-  @observable
-  name = 'Alice';
+  @_interceptReads(value => value && value.toUpperCase())
+  @observable name = 'Alice';
 }
 
 const user = new User();
@@ -328,9 +311,7 @@ import {save, createSaveDecorator} from 'mobx-decorators'
 class User {
   storeName = 'user';
 
-  @save
-  @observable
-  loginCount;
+  @save @observable loginCount;
 }
 
 const user = new User();
@@ -357,9 +338,7 @@ class User {
       console.log(property, value); // 1000
     }
   })
-  @setter
-  @observable
-  loginCount;
+  @setter @observable loginCount;
 }
 
 const user = new User();
@@ -376,14 +355,12 @@ class User {
   @save({
     storeName: 'user',
   })
-  @observable
-  loginCount;
+  @observable loginCount;
   
   @save({
     storeName: 'group',
   })
-  @observable
-  group;
+  @observable group;
 }
 
 const user = new User();
@@ -401,8 +378,7 @@ class User {
       save: value => toBSON(value),
     },
   })
-  @observable
-  lastLogin;
+  @observable lastLogin;
 }
 
 const user = new User();
@@ -416,13 +392,9 @@ const mysave = createSaveDecorator({
 });
 
 class User {
-  @mysave
-  @observable
-  loginCount;
+  @mysave @observable loginCount;
   
-  @save
-  @observable
-  name;
+  @save @observable name;
 }
 
 const user = new User();
@@ -439,12 +411,9 @@ class User {
   @mysave({
     onInitialized: () => console.log('initialized')
   })
-  @observable
-  loginCount;
+  @observable loginCount;
   
-  @save
-  @observable
-  name;
+  @save @observable name;
 }
 
 const user = new User();
