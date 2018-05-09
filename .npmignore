@@ -1,8 +1,8 @@
 .idea/
 src/
 test/
-.babelrc.js
-.babelrc.esm.js
+.babel.lib.js
+.babel.esm.js
 yarn.lock
 .npmignore
 .travis.yml

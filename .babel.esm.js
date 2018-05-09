@@ -6,4 +6,8 @@ module.exports = {
       targets: {esmodules: true},
     }],
   ],
+  plugins: [
+    ['@babel/proposal-class-properties', {loose: true}],
+    '@babel/proposal-export-default-from',
+  ],
 };
