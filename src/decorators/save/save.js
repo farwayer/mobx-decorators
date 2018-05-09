@@ -49,8 +49,8 @@ function getDecorator({
 
           const data = await storage.getItem(key);
 
-          // check value was loaded and property was not modified by user
-          if (isLoaded(data) && status.isLoading(key)) {
+          // check value exists and property was not modified by user
+          if (isExists(data) && status.isLoading(key)) {
             status.set(key, Status.SettingLoadedValue);
 
             value = serializerLoad.call(store, data);
@@ -130,6 +130,6 @@ class Status {
   }
 }
 
-function isLoaded(data) {
+function isExists(data) {
   return isDefined(data) && !isNull(data);
 }
