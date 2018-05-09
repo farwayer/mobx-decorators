@@ -413,4 +413,27 @@ describe('@save', () => {
     const user = new User();
     user.loginCount.should.be.equal(0);
   });
+
+  it('should interpret null value as non-exists', done => {
+    const storage = new Storage({
+      'user:loginCount': null,
+    });
+
+    class User {
+      storeName = 'user';
+
+      @save({
+        storage,
+        onInitialized: (store, property, value) => {
+          value.should.be.equal(0);
+          store.loginCount.should.be.equal(0);
+          done();
+        },
+      })
+      @observable loginCount = 0;
+    }
+
+    const user = new User();
+    user.loginCount.should.be.equal(0);
+  });
 });

@@ -1,3 +1,4 @@
+import {equal} from 'assert'
 import {observable, action} from 'mobx'
 import save, {createSaveDecorator} from '../../src/decorators/save'
 import {default as basicSave} from '../../src/decorators/save/save'
@@ -369,5 +370,28 @@ describe('@save', () => {
 
     const user = new User();
     user.name
+  });
+
+  it('should interpret null value as non-exists', done => {
+    const storage = new Storage({
+      'user:loginCount': null,
+    });
+
+    class User {
+      storeName = 'user';
+
+      @save({
+        storage,
+        onInitialized: (store, property, value) => {
+          equal(value, undefined);
+          equal(store.loginCount, undefined);
+          done();
+        },
+      })
+      @observable loginCount;
+    }
+
+    const user = new User();
+    user.loginCount;
   });
 });
