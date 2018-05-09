@@ -3,14 +3,6 @@ import observe from '../observe'
 import {decorate, isPropertyDecorator, isDefined, isNull} from '../../utils'
 
 
-const Status = {
-  NotInitialized: undefined,
-  Loading: 1,
-  SettingLoadedValue: 2,
-  Initialized: 3,
-};
-
-
 export function createDecorator(storage, baseOptions = {}) {
   baseOptions = {storage, ...baseOptions};
 
@@ -40,15 +32,14 @@ function getDecorator({
   }
 
   return (target, property, description) => {
-    const status = new PropertyStatus();
+    const status = new Status();
 
     return observe(async function ({newValue: value}) {
       const store = this;
       const key = storageKey(store, storeName, property);
 
-      // if property was modified by user while loading
-      // loaded value will be ignored
-      if (status.get(key) === Status.Loading) {
+      // user modified value while loading; loaded value will be ignored
+      if (status.isLoading(key)) {
         status.set(key, Status.Initialized);
       }
 
@@ -59,7 +50,7 @@ function getDecorator({
           const data = await storage.getItem(key);
 
           // check value was loaded and property was not modified by user
-          if (isLoaded(data) && status.get(key) === Status.Loading) {
+          if (isLoaded(data) && status.isLoading(key)) {
             status.set(key, Status.SettingLoadedValue);
 
             value = serializerLoad.call(store, data);
@@ -118,7 +109,12 @@ function storageKey(store, storeName, property) {
   return `${storeName}:${property}`;
 }
 
-class PropertyStatus {
+class Status {
+  static NotInitialized = undefined;
+  static Loading = 1;
+  static SettingLoadedValue = 2;
+  static Initialized = 3;
+
   statuses = {};
 
   set(key, status) {
@@ -127,6 +123,10 @@ class PropertyStatus {
 
   get(key) {
     return this.statuses[key];
+  }
+
+  isLoading(key) {
+    return this.get(key) === Status.Loading;
   }
 }
 
