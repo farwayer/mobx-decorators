@@ -465,6 +465,10 @@ class User {
 
 ## Changelog
 
+### 5.0.1
+
+- new babel transform fixes
+
 ### 5.0.0
 
 - interpret null value from storage as non-existent (localStorage returns null
