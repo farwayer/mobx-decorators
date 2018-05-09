@@ -21,3 +21,7 @@ export function isString(str) {
 export function isDefined(val) {
   return val !== undefined;
 }
+
+export function isNull(val) {
+  return val === null;
+}

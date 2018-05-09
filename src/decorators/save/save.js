@@ -1,6 +1,6 @@
 import {runInAction} from 'mobx'
 import observe from '../observe'
-import {decorate, isPropertyDecorator, isDefined} from '../../utils'
+import {decorate, isPropertyDecorator, isDefined, isNull} from '../../utils'
 
 
 const Status = {
@@ -59,7 +59,7 @@ function getDecorator({
           const data = await storage.getItem(key);
 
           // check value was loaded and property was not modified by user
-          if (isDefined(data) && status.get(key) === Status.Loading) {
+          if (isLoaded(data) && status.get(key) === Status.Loading) {
             status.set(key, Status.SettingLoadedValue);
 
             value = serializerLoad.call(store, data);
@@ -128,4 +128,8 @@ class PropertyStatus {
   get(key) {
     return this.statuses[key];
   }
+}
+
+function isLoaded(data) {
+  return isDefined(data) && !isNull(data);
 }
