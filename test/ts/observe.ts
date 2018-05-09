@@ -7,7 +7,10 @@ describe('@observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(change => loginCount = change.newValue)
+      @observe(change => {
+        if (change.type !== 'update') return;
+        loginCount = change.newValue;
+      })
       @observable
       loginCount = 0;
 
@@ -53,7 +56,10 @@ describe('@observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(change => loginCount = change.newValue, true)
+      @observe(change => {
+        if (change.type !== 'update') return;
+        loginCount = change.newValue;
+      }, true)
       @observable
       loginCount = 0;
     }
@@ -98,7 +104,10 @@ describe('@observe', () => {
     let loginCount = -1;
 
     class User {
-      @observe(change => loginCount = change.newValue)
+      @observe(change => {
+        if (change.type !== 'update') return;
+        loginCount = change.newValue;
+      })
       @observable
       loginCount = 0;
 
@@ -124,7 +133,10 @@ describe('@observe', () => {
 
     class User {
       @observable
-      @observe(change => loginCount = change.newValue)
+      @observe(change => {
+        if (change.type !== 'update') return;
+        loginCount = change.newValue;
+      })
       loginCount = 0;
 
       @action login() {

@@ -3,6 +3,7 @@
     "target": "es5",
     "allowJs": true,
     "experimentalDecorators": true,
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "dom"],
+    "types": ["should", "mocha", "node"]
   }
 }

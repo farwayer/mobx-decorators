@@ -8,6 +8,7 @@ describe('@intercept', () => {
 
     class User {
       @intercept(change => {
+        if (change.type !== 'update') return change;
         loginCount = change.newValue;
         return change;
       })
@@ -61,6 +62,7 @@ describe('@intercept', () => {
   it('should change ignore works', () => {
     class User {
       @intercept(change => {
+          if (change.type !== 'update') return change;
         if (change.newValue !== 0) return;
         return change;
       })
@@ -142,6 +144,7 @@ describe('@intercept', () => {
 
     class User {
       @intercept(change => {
+        if (change.type !== 'update') return change;
         loginCount = change.newValue;
         return change;
       })
@@ -171,6 +174,7 @@ describe('@intercept', () => {
     class User {
       @observable
       @intercept(change => {
+        if (change.type !== 'update') return change;
         loginCount = change.newValue;
         return change;
       })
