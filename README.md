@@ -465,6 +465,13 @@ class User {
 
 ## Changelog
 
+### 5.0.0
+
+- interpret null value from storage as non-existent (localStorage returns null
+for non-existent keys)  
+Bump major version because it can be back incompatible.
+- .native postfix for React Native
+
 ### 4.1.0
 
 - separate esm build
