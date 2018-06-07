@@ -2,6 +2,8 @@
 
 _Several helper MobX decorators_
 
+**MobX 5 is not supported yet**
+
 [![Build Status](https://img.shields.io/travis/farwayer/mobx-decorators.svg)](https://travis-ci.org/farwayer/mobx-decorators)
 [![Coverage Status](https://img.shields.io/coveralls/farwayer/mobx-decorators.svg)](https://coveralls.io/github/farwayer/mobx-decorators?branch=master)
 
