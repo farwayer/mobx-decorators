@@ -467,6 +467,10 @@ class User {
 
 ## Changelog
 
+### 5.0.2
+
+- fix babel runtime import; lock @babel rc version
+
 ### 5.0.1
 
 - new babel transform fixes
