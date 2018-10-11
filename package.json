@@ -32,27 +32,27 @@
     "mobx": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-rc.1",
-    "@babel/core": "7.0.0-rc.1",
-    "@babel/plugin-proposal-class-properties": "7.0.0-rc.1",
-    "@babel/plugin-proposal-decorators": "7.0.0-rc.1",
-    "@babel/plugin-proposal-export-default-from": "7.0.0-rc.1",
-    "@babel/plugin-transform-runtime": "7.0.0-rc.1",
-    "@babel/preset-env": "7.0.0-rc.1",
-    "@babel/register": "7.0.0-rc.1",
+    "@babel/cli": "7.1.2",
+    "@babel/core": "7.1.2",
+    "@babel/plugin-proposal-class-properties": "7.1.0",
+    "@babel/plugin-proposal-decorators": "7.1.2",
+    "@babel/plugin-proposal-export-default-from": "7.0.0",
+    "@babel/plugin-transform-runtime": "7.1.0",
+    "@babel/preset-env": "7.1.0",
+    "@babel/register": "7.0.0",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.8",
+    "@types/node": "^10.11.7",
     "@types/should": "^13.0.0",
     "coveralls": "^3.0.2",
     "istanbul": "1.1.0-alpha.1",
-    "mobx": "^4.3.1",
+    "mobx": "4.5.0",
     "mocha": "^5.2.0",
     "should": "^13.2.3",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.1.2"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-rc.1",
+    "@babel/runtime": "7.1.2",
     "lodash.difference": "^4.5.0",
     "lodash.intersection": "^4.4.0"
   }
