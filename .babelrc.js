@@ -7,9 +7,9 @@ module.exports = {
     ['@babel/env', envConfig],
   ],
   plugins: [
-    ['@babel/proposal-decorators', {legacy: true}],
-    ['@babel/proposal-class-properties', {loose: true}],
-    '@babel/proposal-export-default-from',
-    '@babel/transform-runtime',
+    ['@babel/plugin-proposal-decorators', {legacy: true}],
+    ['@babel/plugin-proposal-class-properties', {loose: true}],
+    '@babel/plugin-proposal-export-default-from',
+    '@babel/plugin-transform-runtime',
   ],
 };
