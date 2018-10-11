@@ -19,6 +19,7 @@
   "jsnext:main": "esm",
   "module": "esm",
   "react-native": "esm",
+  "types":  "src/index.d.ts",
   "scripts": {
     "build": "yarn clean && yarn build-lib && yarn build-esm",
     "build-lib": "babel src --out-dir lib",
