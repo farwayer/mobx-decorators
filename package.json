@@ -29,7 +29,7 @@
     "prepack": "yarn build && yarn test"
   },
   "peerDependencies": {
-    "mobx": "^4.1.1"
+    "mobx": "^4"
   },
   "devDependencies": {
     "@babel/cli": "7.1.2",
