@@ -1259,6 +1259,11 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
+decorating@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/decorating/-/decorating-1.0.3.tgz#e0117f421c1c6ed11c887b32065308053e1ec22f"
+  integrity sha512-2Cz5vajZOaUPTrZ21rae6+J4TN4bs5fzcv9U+lHVbCEf+dZH/eGhCW3apHn8dN/r+S83G2xtfldk6vS+T/4Qkw==
+
 deep-extend@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"

@@ -1,17 +1,14 @@
-import {observe as mobxObserve} from 'mobx'
-import {attachInitializer, isPropertyDecorator} from '../utils'
+import {observe} from 'mobx'
+import {propertyDecorator} from 'decorating'
+import {attachInitializer} from '../utils'
 
 
-export default function observe(handler, invokeImmediately) {
-  if (isPropertyDecorator(arguments)) {
-    throw new Error("@observe must be called with handler argument");
-  }
+export default propertyDecorator((target, prop, desc, handler, invokeImmediately) => {
+  if (!handler) throw new Error("@observe must be called with handler argument");
 
-  return (target, property, description) => {
-    attachInitializer(target, property, store => {
-      mobxObserve(store, property, handler.bind(store), invokeImmediately);
-    });
+  attachInitializer(target, prop, store => {
+    observe(store, prop, handler.bind(store), invokeImmediately);
+  });
 
-    return description && {...description, configurable: true};
-  }
-}
+  return desc && {...desc, configurable: true};
+})

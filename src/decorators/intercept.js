@@ -1,17 +1,14 @@
-import {intercept as mobxIntercept} from 'mobx'
-import {attachInitializer, isPropertyDecorator} from '../utils'
+import {intercept} from 'mobx'
+import {propertyDecorator} from 'decorating'
+import {attachInitializer} from '../utils'
 
 
-export default function intercept(handler) {
-  if (isPropertyDecorator(arguments)) {
-    throw new Error("@intercept must be called with handler argument");
-  }
+export default propertyDecorator((target, prop, desc, handler) => {
+  if (!handler) throw new Error("@intercept must be called with handler argument");
 
-  return (target, property, description) => {
-    attachInitializer(target, property, store => {
-      mobxIntercept(store, property, handler.bind(store));
-    });
+  attachInitializer(target, prop, store => {
+    intercept(store, prop, handler.bind(store));
+  });
 
-    return description && {...description, configurable: true};
-  }
-}
+  return desc && {...desc, configurable: true};
+})
