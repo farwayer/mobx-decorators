@@ -1,6 +1,4 @@
-const envConfig = process.env.ESM
-  ? {modules: false, targets: {esmodules: true}}
-  : {};
+const envConfig = process.env.ESM ? {modules: false} : {};
 
 module.exports = {
   presets: [
