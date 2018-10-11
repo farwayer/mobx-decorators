@@ -467,6 +467,12 @@ class User {
 
 ## Changelog
 
+### 5.0.3
+
+- esm: remove `esmodules` from babel env config (fix the problem with webpack uglify)
+- add TS typings to npm build
+- (internal) using [decorating](https://github.com/farwayer/decorating) lib for more clean code 
+
 ### 5.0.2
 
 - fix babel runtime import; lock @babel rc version
