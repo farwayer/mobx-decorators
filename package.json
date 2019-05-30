@@ -25,7 +25,7 @@
     "build-lib": "babel src --out-dir lib",
     "build-esm": "ESM=1 babel src --out-dir esm",
     "clean": "rm -rf lib esm",
-    "test": "mocha",
+    "test": "NODE_ENV=production mocha",
     "cover": "istanbul cover _mocha --report lcovonly -- --reporter spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
     "prepack": "yarn build && yarn test"
   },
