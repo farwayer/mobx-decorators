@@ -1,7 +1,7 @@
-import {equal} from 'assert'
+import {strictEqual} from 'assert'
 import {observable, action} from 'mobx'
 import save, {createSaveDecorator} from '../../src/decorators/save'
-import {default as basicSave} from '../../src/decorators/save/save'
+import basicSave from '../../src/decorators/save/save'
 
 
 class Storage {
@@ -383,8 +383,8 @@ describe('@save', () => {
       @save({
         storage,
         onInitialized: (store, property, value) => {
-          equal(value, undefined);
-          equal(store.loginCount, undefined);
+          strictEqual(value, undefined);
+          strictEqual(store.loginCount, undefined);
           done();
         },
       })
