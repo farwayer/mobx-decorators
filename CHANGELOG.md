@@ -1,6 +1,6 @@
 ## Changelog
 
-### 5.0.4
+### 5.0.5
 
 - up deps
 - warn for mobx >4

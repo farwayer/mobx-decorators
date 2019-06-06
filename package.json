@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorators",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Several helper MobX decorators (setter, observe, save, ...)",
   "repository": "farwayer/mobx-decorators",
   "author": "farwayer <farwayer@gmail.com>",
