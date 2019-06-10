@@ -1,5 +1,9 @@
 ## Changelog
 
+### 5.0.6
+
+- revert warn for mobx >4
+
 ### 5.0.5
 
 - up deps
