@@ -1,7 +1,6 @@
 import {strictEqual} from 'assert'
 import {observable, action} from 'mobx'
-import save, {createSaveDecorator} from '../../src/decorators/save'
-import basicSave from '../../src/decorators/save/save'
+import {save, createSaveDecorator} from '../../src'
 
 
 class Storage {
@@ -311,21 +310,6 @@ describe('@save', () => {
   });
 
 
-  it('should throw if no storage defined', () => {
-    (() => {
-      class User {
-        storeName = 'user';
-
-        @basicSave()
-        @observable
-        loginCount;
-      }
-
-      const user = new User();
-    }).should.throw();
-  });
-
-
   it('should run callbacks in store context', done => {
     const storage = new Storage({
       'user:name': JSON.stringify("Alice"),
@@ -344,9 +328,15 @@ describe('@save', () => {
 
       @save({
         storage,
-        transform: function(value) {
-          checkStore(this);
-          return value;
+        serializer: {
+          save(data) {
+            checkStore(this);
+            return data;
+          },
+          load(value) {
+            checkStore(this);
+            return value;
+          },
         },
         onLoaded: function() {
           checkStore(this);

@@ -363,9 +363,15 @@ describe('@save', () => {
 
       @save({
         storage,
-        transform: function(value) {
-          checkStore(this);
-          return value;
+        serializer: {
+          save(data) {
+            checkStore(this);
+            return data;
+          },
+          load(value) {
+            checkStore(this);
+            return value;
+          },
         },
         onLoaded: function() {
           checkStore(this);
