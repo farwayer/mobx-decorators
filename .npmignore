@@ -1,6 +1,4 @@
 .idea/
-src/
-!src/index.d.ts
 test/
 .babelrc.js
 yarn.lock
