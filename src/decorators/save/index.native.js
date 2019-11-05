@@ -1,4 +1,4 @@
-import { createDecorator } from './save'
+import {createDecorator} from './save'
 import AsyncStorage from "@react-native-community/async-storage"
 
 
