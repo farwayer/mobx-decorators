@@ -1,6 +1,6 @@
 .idea/
 test/
-.babelrc.js
+babel.config.js
 yarn.lock
 .npmignore
 .travis.yml
