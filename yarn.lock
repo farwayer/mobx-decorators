@@ -2117,20 +2117,10 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-lodash.difference@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.difference/-/lodash.difference-4.5.0.tgz#9ccb4e505d486b91651345772885a2df27fd017c"
-  integrity sha1-nMtOUF1Ia5FlE0V3KIWi3yf9AXw=
-
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
-
-lodash.intersection@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.intersection/-/lodash.intersection-4.4.0.tgz#0a11ba631d0e95c23c7f2f4cbb9a692ed178e705"
-  integrity sha1-ChG6Yx0OlcI8fy9Mu5ppLtF45wU=
 
 lodash@^4.17.13, lodash@^4.17.15:
   version "4.17.15"
@@ -2725,6 +2715,11 @@ qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+
+rambda@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/rambda/-/rambda-4.0.2.tgz#2369c8e30c882f5c12cf4c6c033072e3c05c6be7"
+  integrity sha512-gwldiOIW9I5QAxcIXzFoEhHMonsG0M18A5Tc9LnxHDeZIRZ/1+2OJqFONVU3R7ZUr6UZnk8ffSABeQWYcCabIQ==
 
 rc@^1.2.7:
   version "1.2.8"

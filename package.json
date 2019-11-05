@@ -54,7 +54,6 @@
   "dependencies": {
     "@babel/runtime": "7.7.1",
     "decorating": "^1.1.0",
-    "lodash.difference": "^4.5.0",
-    "lodash.intersection": "^4.4.0"
+    "rambda": "^4.0.2"
   }
 }
