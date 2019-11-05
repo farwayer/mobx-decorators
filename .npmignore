@@ -1,7 +1,6 @@
 .idea/
 test/
 babel.config.js
-yarn.lock
 .npmignore
 .travis.yml
 yarn-error.log
