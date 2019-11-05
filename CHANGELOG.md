@@ -1,5 +1,9 @@
 ## Changelog
 
+### 6.0.0
+
+- React Native async storage from community repo
+
 ### 5.0.6
 
 - revert warn for mobx >4
