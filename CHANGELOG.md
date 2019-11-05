@@ -1,5 +1,9 @@
 ## Changelog
 
+### 6.0.1
+
+- replace lodash with rambda
+
 ### 6.0.0
 
 - React Native async storage from community repo
