@@ -7,3 +7,4 @@ yarn.lock
 .npmignore
 .travis.yml
 yarn-error.log
+.nyc_output/

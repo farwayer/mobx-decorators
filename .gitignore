@@ -3,3 +3,4 @@ node_modules/
 lib/
 esm/
 yarn-error.log
+.nyc_output/
