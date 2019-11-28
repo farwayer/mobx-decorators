@@ -275,7 +275,7 @@ only after first property access. If you change property before or during
 loading than restored value will be ignored.
 
 `onLoaded` callback will be called only if value is loaded from storage.  
-`onSave` will be called after saving.  
+`onSaved` will be called after saving.  
 `onInitialized` will be called after loading attempt independent of the result.
 
 By default values saved as `json`. In some cases (`Date` for example) you should
@@ -336,7 +336,7 @@ class User {
       console.log(property, value); // 'loginCount', 999
       console.log(store.loginCount); // 999
     },
-    onSave: (store, property, value) => {
+    onSaved: (store, property, value) => {
       console.log(property, value); // 1000
     }
   })
